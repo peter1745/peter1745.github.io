@@ -3,33 +3,33 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - Mono Embedding for Game Engines</title>
+        <title>Building Mono - Mono Embedding for Game Engines</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
     </head>
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="../introduction/building-mono.html" class="active"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="../introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -107,7 +107,7 @@
                     <h1 class="menu-title">Mono Embedding for Game Engines</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                     </div>
@@ -134,21 +134,42 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="about-me"><a class="header" href="#about-me">About Me</a></h2>
-<p>Hi, my name is Peter, and I'm a game engine developer from Sweden, I'm also the author of this guide. I've been working on a game engine called <a href="https://www.hazelengine.com/">Hazel</a> for over a year, and one of the things I've worked on is a C# scripting engine, using the Mono library.</p>
-<p>Hazel is not my own personal engine, and it was originally created by <a href="https://thecherno.com/">Yan Chernikov</a>. I joined the project in September of 2020 as a volunteer, and now I'm lucky enough to be able to work on it as an actual job.</p>
-<h2 id="the-goal-of-this-guide"><a class="header" href="#the-goal-of-this-guide">The goal of this guide</a></h2>
-<p>The goal of this guide is to help you embed the <a href="https://www.mono-project.com/">Mono</a> library into your game engine. For the past few months I've been working on rewriting the C# scripting engine in Hazel, and I kept getting frustrated because there's very little in terms of useful documentation on how to use Mono in the scope of a game engine.</p>
-<p>Yes, Mono <em>does</em> have a documentation site for embedding: <a href="http://docs.go-mono.com/?link=root%3a%2fembed">http://docs.go-mono.com/</a>, but in my experience it's all but useless. There are a few open source (or at least source available) projects out there that have embedded Mono, but there's no real <em>documentation</em> available.</p>
-<p><strong>So</strong>, that's why I decided to create this guide. I've been through the pain of googling for hours to figure out how to do something in Mono, and I figured I could help spare others from that pain.</p>
-<p>Before we get started I just wanted to say that this guide is <strong>not</strong> a guide on building a complete scripting engine, it's just meant to give you the knowledge you <em>need</em> to write a scripting engine.</p>
+                        <h1 id="building-mono"><a class="header" href="#building-mono">Building Mono</a></h1>
+<h2 id="cloning-from-github"><a class="header" href="#cloning-from-github">Cloning from GitHub</a></h2>
+<p>Before we can build Mono, we have to clone it from GitHub. You should hopefully know how to do this yourself, but I know <em>someone</em> won't know how to do that so I'm including this section anyway.</p>
+<p>If you don't need a step-by-step guide for this, you should just clone <a href="https://github.com/mono/mono">https://github.com/mono/mono</a>.</p>
+<p>Alright, in order to clone Mono make sure you have a Git client installed, I'll be providing commands for the command-line git client, but you could also use a GUI client.</p>
+<p>In order to clone Mono from the command line, you just run <code>git clone https://github.com/mono/mono</code>, that's it. Yeah I know, this section feels pointless but might as well include it.</p>
+<h2 id="building-classic-mono-from-source"><a class="header" href="#building-classic-mono-from-source">Building classic Mono from source</a></h2>
+<p>Now we get to the fun part: building Mono from source. Mono is a pretty large project so building Mono can take a bit of time. I'll provide build instructions for Windows, MacOS and Linux (I'll be using Linux Mint when building).</p>
+<p>I'll provide the pre-requisites that you'll need to build Mono on the specified platform as to save you some thinking power and pain.</p>
+<h3 id="windows"><a class="header" href="#windows">Windows</a></h3>
+<p>Building Mono on Windows is <em>ridiculously</em> easy, most likely easier than any other platform. I will note that using Visual Studio only works for building the Mono runtime libraries, not the .NET libraries (e.g <code>System.dll</code>, <code>System.Collections.Generic.dll</code>, etc...).</p>
+<p>In my case I won't be building the .NET libraries from source, I'll be getting them by installing Mono locally and copying them from the install directory.</p>
+<p>If you want to build the .NET libraries you'll need access to the <code>make</code> command, which you can use by running a <a href="https://www.cygwin.com/">Cygwin</a> shell.</p>
+<h4 id="pre-requisites"><a class="header" href="#pre-requisites">Pre Requisites</a></h4>
+<ul>
+<li>Visual Studio (I'll be using Visual Studio 2022)</li>
+<li>Cygwin or some other tool that let's you use <code>make</code> (Only needed if you want to build the .NET libraries)</li>
+</ul>
+<h4 id="building"><a class="header" href="#building">Building</a></h4>
+<p>In order to build Mono you just need to navigate to <code>mono/msvc/</code> and open up <strong>mono.sln</strong> in Visual Studio. All you need to do now is select the build configuration and the platform to build for.</p>
+<p>I recommend building both the <code>Release</code> and the <code>Debug</code> configuration since only building <code>Release</code> will mean you'll have an even harder time debugging Mono related issues. If you want to build 64-bit or 32-bit doesn't really matter for the sake of this guide, but these days you really don't need to support 32-bit platforms.
+After that just start the build and let it run!</p>
+<p>If you've done everything correctly (which I assume you have since it's not hard building Mono on Windows) you can move on to the &quot;Getting the Necessary Files&quot; chapter.</p>
+<h3 id="linux"><a class="header" href="#linux">Linux</a></h3>
+<p><strong>Coming Soon!</strong></p>
+<h3 id="macosx"><a class="header" href="#macosx">MacOSX</a></h3>
+<p><strong>Coming Soon!</strong></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="next" href="introduction/about-mono.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="prev" href="../introduction/about-mono.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../introduction/necessary-files.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -157,7 +178,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="next" href="introduction/about-mono.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="prev" href="../introduction/about-mono.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../introduction/necessary-files.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -167,12 +191,12 @@
         <script type="text/javascript">
             window.playground_copyable = true;
         </script>
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
     </body>
