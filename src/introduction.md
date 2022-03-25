@@ -12,3 +12,8 @@ Yes, Mono *does* have a documentation site for embedding: [http://docs.go-mono.c
 **So**, that's why I decided to create this guide. I've been through the pain of googling for hours to figure out how to do something in Mono, and I figured I could help spare others from that pain.
 
 Before we get started I just wanted to say that this guide is **not** a guide on building a complete scripting engine, it's just meant to give you the knowledge you *need* to write a scripting engine.
+
+## Credits
+I'm not the only person who has contributed to this. I've had some help with certain parts of it, so I wanted to make sure to mention anyone that has helped out.
+
+- **Marca**, provided build instructions for Mac OSX
