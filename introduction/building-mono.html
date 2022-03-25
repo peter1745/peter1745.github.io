@@ -135,6 +135,14 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="building-mono"><a class="header" href="#building-mono">Building Mono</a></h1>
+<p>Building Mono isn't too hard, but it's a large library, taking up quite a lot of space on your computer, so it will probably take some time to clone, and build it.</p>
+<h2 id="platforms"><a class="header" href="#platforms">Platforms</a></h2>
+<p>Here are some links to the instructions for each platform:</p>
+<ul>
+<li><a href="#windows">Windows</a></li>
+<li><a href="#linux">Linux (Coming Soon!)</a></li>
+<li><a href="#macosx">Mac OSX</a></li>
+</ul>
 <h2 id="cloning-from-github"><a class="header" href="#cloning-from-github">Cloning from GitHub</a></h2>
 <p>Before we can build Mono, we have to clone it from GitHub. You should hopefully know how to do this yourself, but I know <em>someone</em> won't know how to do that so I'm including this section anyway.</p>
 <p>If you don't need a step-by-step guide for this, you should just clone <a href="https://github.com/mono/mono">https://github.com/mono/mono</a>.</p>
@@ -149,6 +157,7 @@
 <p>If you want to build the .NET libraries you'll need access to the <code>make</code> command, which you can use by running a <a href="https://www.cygwin.com/">Cygwin</a> shell.</p>
 <h4 id="pre-requisites"><a class="header" href="#pre-requisites">Pre Requisites</a></h4>
 <ul>
+<li>An installed copy of Mono (might not be required but it's good to have just in case)</li>
 <li>Visual Studio (I'll be using Visual Studio 2022)</li>
 <li>Cygwin or some other tool that let's you use <code>make</code> (Only needed if you want to build the .NET libraries)</li>
 </ul>
@@ -160,7 +169,18 @@ After that just start the build and let it run!</p>
 <h3 id="linux"><a class="header" href="#linux">Linux</a></h3>
 <p><strong>Coming Soon!</strong></p>
 <h3 id="macosx"><a class="header" href="#macosx">MacOSX</a></h3>
-<p><strong>Coming Soon!</strong></p>
+<p>Building Mono on Mac is very similar to Linux, you still use <code>make</code> and <code>autogen</code>.</p>
+<h4 id="pre-requisites-1"><a class="header" href="#pre-requisites-1">Pre-Requisites</a></h4>
+<ul>
+<li>An installed copy of Mono (only if you don't get <code>monolite</code>)</li>
+<li>Make</li>
+</ul>
+<h4 id="building-1"><a class="header" href="#building-1">Building</a></h4>
+<p>The first step is to open a terminal and navigate to the root <code>mono</code> folder.</p>
+<p>Before you continue, keep in mind that running <code>./autogen.sh</code> will cause Mono to clone all the submodules that it will need to build, this process takes quite a long time. Once you're in the root Mono folder you'll want to start by running this command: <code>./autogen.sh --prefix=&lt;absolutePathToDesiredOutputDirectory&gt; --disable-nls</code>.</p>
+<p>Once that command has finished, you'll want to either install Mono locally, or get <code>monolite</code>. If you have Mono installed locally, just continue to the next step, if you want to use <code>monolite</code> however, you'll have to run: <code>make get-monolite-latest</code> in order to get it.</p>
+<p>Once you have Mono or <code>monolite</code> you'll want to run <code>make</code>, and then <code>make install</code> to build Mono.</p>
+<p>All the necessary libraries should've been placed in the folder you specified as part of the <code>--prefix</code> flag.</p>
 
                     </main>
 

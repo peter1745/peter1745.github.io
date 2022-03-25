@@ -136,13 +136,19 @@
                     <main>
                         <h1 id="getting-the-necessary-files"><a class="header" href="#getting-the-necessary-files">Getting the Necessary Files</a></h1>
 <p>Now it's time for us to get all the necessary files that we'll need to embed the Mono runtime. This includes the Mono libraries and the .NET libraries. Naturally the files are called different things and located in different places depending on the platform, but I'll provide the necessary files and locations for Windows, MacOSX and Linux.</p>
+<p>You can use these links to quickly jump to your platform:</p>
+<ul>
+<li><a href="#windows">Windows</a></li>
+<li><a href="#linux">Linux (Coming Soon!)</a></li>
+<li><a href="#macosx">Mac OSX</a></li>
+</ul>
 <h2 id="windows"><a class="header" href="#windows">Windows</a></h2>
-<h3 id="runtime-libraries"><a class="header" href="#runtime-libraries">Runtime Libraries</a></h3>
-<p>All of Mono's runtime libraries should've been built into <code>mono-root/msvc/build/sgen/{platform}/</code>, where <code>{platform}</code> is either <code>x64</code> or <code>Win32</code>.</p>
+<h3 id="native-libraries"><a class="header" href="#native-libraries">Native Libraries</a></h3>
+<p>All of Mono's native libraries should've been built into <code>mono-root/msvc/build/sgen/{platform}/</code>, where <code>{platform}</code> is either <code>x64</code> or <code>Win32</code>.</p>
 <p>In that folder you'll see three other folders called <code>bin</code>, <code>lib</code> and <code>obj</code>, we're only interested in the <code>bin</code> and <code>lib</code> folders.
 Both of those will have either one or two subfolders based on if you built both <code>Release</code> and <code>Debug</code>, or only <code>Release</code> or only <code>Debug</code>.</p>
 <p>I will only be telling you <em>what</em> files you'll need, how <em>you</em> choose to structure your projects dependencies is up to you.</p>
-<p>So, here's the runtime libraries that you'll need from <code>lib</code>:</p>
+<p>So, here's the native libraries that you'll need from <code>lib</code>:</p>
 <ul>
 <li>eglib.lib</li>
 <li>libgcmonosgen.lib</li>
@@ -150,14 +156,11 @@ Both of those will have either one or two subfolders based on if you built both 
 <li>libmonoruntime-sgen.lib</li>
 <li>libmono-static-sgen.lib</li>
 <li>libmonoutils.lib</li>
-<li>mono-2.0-dac-sgen.lib</li>
 <li>mono-2.0-sgen.lib</li>
 <li>MonoPosixHelper.lib</li>
 </ul>
-<p>Effectively it's all the libraries except for <code>libtest.lib</code>.</p>
 <p>You're also going to need some files from the <code>bin</code> folder, these files will have to be placed next to your applications executable. These are the DLL files you'll need from <code>bin</code>:</p>
 <ul>
-<li>mono-2.0-dac-sgen.dll</li>
 <li>mono-2.0-sgen.dll</li>
 <li>MonoPosixHelper.dll</li>
 </ul>
@@ -176,7 +179,27 @@ I may end up covering the other folders at a later date, but I have only recentl
 <h2 id="linux"><a class="header" href="#linux">Linux</a></h2>
 <p><strong>Coming Soon!</strong></p>
 <h2 id="macosx"><a class="header" href="#macosx">MacOSX</a></h2>
-<p><strong>Coming Soon!</strong></p>
+<h3 id="native-libraries-1"><a class="header" href="#native-libraries-1">Native Libraries</a></h3>
+<p>All the necessary native libraries you'll need should be located in the output folder that you specified when you built Mono. You'll find a folder called <code>lib</code> in there, that's where the libraries are located.</p>
+<p>So, here's the native libraries that you'll need from <code>lib</code>:</p>
+<ul>
+<li>libeglib.a</li>
+<li>libmonoutils.a</li>
+<li>libMonoPosixHelper.dylib</li>
+<li>libmonosgen-2.0.dylib (This is most likely a symlink for libmonosgen-2.0.1.dylib)</li>
+</ul>
+<h3 id="net-libraries-1"><a class="header" href="#net-libraries-1">.NET Libraries</a></h3>
+<p>You don't technically <strong>have</strong> to copy the .NET libraries into your own program, you can tell the Mono runtime where they're located, but I like having them be a part of the project, so I'll be copying them.</p>
+<p>I won't be providing a full list of the files that you'll need, there's a lot of them, instead I'll just tell you what folders you'll need to copy.</p>
+<p>If you've installed Mono locally (not just cloned it) you'll have to navigate to the folder where you installed it. Inside that install folder you'll want to navigate to <code>lib/mono</code>, and you should see a bunch of folders that have numbers, and some that have an <code>-api</code> postfix.</p>
+<p>The main folder you'll want is the one called <code>4.5</code>, just make sure you copy it into a <code>lib</code> folder, located inside of a folder called <code>mono</code>.
+I may end up covering the other folders at a later date, but I have only recently started experimenting with them myself so I don't want to provide incorrect information here.</p>
+<p>If you built the .NET libraries from source you'll have to navigate to the output directory that you specified when you built Mono, and navigate to <code>lib/mono/</code>, and you <em>should</em> find the same folders there. I haven't done this myself so I could be incorrect, if so please open an issue in the GitHub repo for this page. Located here: <a href="https://github.com/peter1745/peter1745.github.io">https://github.com/peter1745/peter1745.github.io</a>.</p>
+<h3 id="header-files-1"><a class="header" href="#header-files-1">Header Files</a></h3>
+<p>Getting the correct header files is really easy, they're located in <code>include/</code> in the output directory you specified when you built Mono. You'll probably want to copy the <code>mono</code> folder, so that when you go to include a Mono header file you type <code>#include &lt;mono/somedir/somefile.h&gt;</code>.</p>
+<p>That's it! You've now got all the files you'll need to embed the Mono runtime.</p>
+<p>Before we continue I will say that <em>most</em> of the time you'll only need to link with <code>libmonosgen-2.0.dylib</code>, but you should still keep the other files around in case you need them later on, or you can delete them if you want to minimize the size of your project as much as possible.</p>
+<h2 id="all-done"><a class="header" href="#all-done">All Done!</a></h2>
 <p>Alright, now you should have all the necessary files, and your project <em>should</em> be configured correctly, but if you don't know how to e.g link the Mono libraries to your project, or add the include directory, well, then <em>maybe</em> you shouldn't be considering embedding Mono just yet.</p>
 <p>Once you've got your project configured and linking with Mono, feel free to move on to the &quot;Setting up the Runtime&quot; section of this guide!</p>
 
