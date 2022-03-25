@@ -1,4 +1,12 @@
 # Building Mono
+Building Mono isn't too hard, but it's a large library, taking up quite a lot of space on your computer, so it will probably take some time to clone, and build it.
+
+## Platforms
+Here are some links to the instructions for each platform:
+- [Windows](#windows)
+- [Linux (Coming Soon!)](#linux)
+- [Mac OSX](#macosx)
+
 ## Cloning from GitHub
 Before we can build Mono, we have to clone it from GitHub. You should hopefully know how to do this yourself, but I know *someone* won't know how to do that so I'm including this section anyway.
 
@@ -21,6 +29,7 @@ In my case I won't be building the .NET libraries from source, I'll be getting t
 If you want to build the .NET libraries you'll need access to the `make` command, which you can use by running a [Cygwin](https://www.cygwin.com/) shell.
 
 #### Pre Requisites
+- An installed copy of Mono (might not be required but it's good to have just in case)
 - Visual Studio (I'll be using Visual Studio 2022)
 - Cygwin or some other tool that let's you use `make` (Only needed if you want to build the .NET libraries)
 
@@ -36,4 +45,19 @@ If you've done everything correctly (which I assume you have since it's not hard
 **Coming Soon!**
 
 ### MacOSX
-**Coming Soon!**
+Building Mono on Mac is very similar to Linux, you still use `make` and `autogen`.
+
+#### Pre-Requisites
+- An installed copy of Mono (only if you don't get `monolite`)
+- Make
+
+#### Building
+The first step is to open a terminal and navigate to the root `mono` folder.
+
+Before you continue, keep in mind that running `./autogen.sh` will cause Mono to clone all the submodules that it will need to build, this process takes quite a long time. Once you're in the root Mono folder you'll want to start by running this command: `./autogen.sh --prefix=<absolutePathToDesiredOutputDirectory> --disable-nls`.
+
+Once that command has finished, you'll want to either install Mono locally, or get `monolite`. If you have Mono installed locally, just continue to the next step, if you want to use `monolite` however, you'll have to run: `make get-monolite-latest` in order to get it.
+
+Once you have Mono or `monolite` you'll want to run `make`, and then `make install` to build Mono.
+
+All the necessary libraries should've been placed in the folder you specified as part of the `--prefix` flag.
