@@ -1,0 +1,216 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Testing Assembly Loading - Mono Embedding for Game Engines</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="../introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="../introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="../first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="../first-steps/testing-assembly-loading.html" class="active"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Mono Embedding for Game Engines</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="testing-assembly-loading"><a class="header" href="#testing-assembly-loading">Testing Assembly Loading</a></h1>
+<p>So, now we have a function capable of loading a C# assembly. So all we have to do now is make sure it actually works properly. How do we do that? Well, we could of course just check that we get a valid <code>MonoAssembly</code> pointer, but that doesn't strictly mean that everything's working as expected.</p>
+<p>In order to properly test it we're going to be iterating over all the class types defined in our assembly, that way we can see exactly what classes, structs and enums are in there. The way we do this is by iterating through the assembly metadata, which we can do by getting access to the type definitions table.</p>
+<h2 id="the-code"><a class="header" href="#the-code">The Code</a></h2>
+<p>Alright that sounds good in theory, but <em>how</em> do we do that? Well it's surprisingly easy, although the code can look a bit complicated at first.</p>
+<pre><code class="language-cpp">void PrintAssemblyTypes(MonoAssembly* assembly)
+{
+    MonoImage* image = mono_assembly_get_image(assembly);
+    const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(image, MONO_TABLE_TYPEDEF);
+    int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
+
+    for (int32_t i = 0; i &lt; numTypes; i++)
+    {
+        uint32_t cols[MONO_TYPEDEF_SIZE];
+        mono_metadata_decode_row(typeDefinitionsTable, i, cols, MONO_TYPEDEF_SIZE);
+
+        const char* nameSpace = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAMESPACE]);
+        const char* name = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAME]);
+
+        printf(&quot;%s.%s&quot;, nameSpace, name);
+    }
+}
+</code></pre>
+<h2 id="tables"><a class="header" href="#tables">Tables</a></h2>
+<p>And that's how easy it is to iterate through all the type definitions in our assembly! But, what does this code <em>actually</em> do? Well it's actually quite simple, simply put the assembly itself stores all the necessary info about the data it contains in a set of tables, you can find a list of all the tables and their columns <a href="http://docs.go-mono.com/?link=xhtml%3adeploy%2fmono-api-metadata.html">here</a>, scroll down to the &quot;Metadata Tables&quot; section and you'll find a list of them.</p>
+<p>Basically what Mono allows us to do is to iterate through all the rows in each table, in the case of the <code>MONO_TABLE_TYPEDEF</code> table each row represents a type, and the columns contains information about that type. We can get a table from an image by making use of <code>mono_image_get_table_info</code>, and passing in the image and the &quot;id&quot; of the table we want.</p>
+<p>And as you can see from the code we can get the assembly image from an assembly by calling <code>mono_assembly_get_image</code> and passing in the assembly.</p>
+<h2 id="rows-and-columns"><a class="header" href="#rows-and-columns">Rows and Columns</a></h2>
+<p>After we have the table that we want to iterate through we have to get the number of rows, or type definitions in this case, in that table, we can do that by calling <code>mono_table_info_get_rows</code> and passing in the table info pointer.</p>
+<p>We then loop over all rows, and now we have to get all the column values for each row. All columns store their data as unsigned 32-bit integers, and so we start by allocating a stack array called <code>cols</code>, and setting the size of the array to the maximum number of columns for the table we're iterating. Mono provides us with constants that represent the number we need for each table, so in this case we set the size of the array to <code>MONO_TYPEDEF_SIZE</code>.</p>
+<p>In order to populate the array we have to decode the current row in the type definitions table, we can do this by calling <code>mono_metadata_decode_row</code>, and passing in a few parameters, while I think the parameters are self-explanatory I realize that might not be the case for everyone, so I'll go through and explain what each parameter is.</p>
+<p>The first parameter is the actual table that we're iterating over. The second parameter is the row whose columns we want to get. The third parameter is simply the columns array that we allocated, and the last parameter is the size of that array.</p>
+<p>After we've called this function our <code>cols</code> array will now be populated with a bunch of values, and we can now use those values to get some of the data for this type.</p>
+<p>A quick note before I explain the rest of the code: The data stored in this array should be used differently depending on what the column <em>represents</em>, in some cases the value is the value that we want, stored right there in the array, other times the value represents an index into a different data structure somewhere else in memory, in the case of the namespace and name of a given type the columns store indices into the string heap.</p>
+<p>So sometimes you'd do what we're doing here, and using the value to get a string from the string heap, and sometimes you'd use the value as-is, the <code>MONO_ASSEMBLYREF_MAJOR_VERSION</code> is a good example of this, if you wanted to get the major version of an assembly you'd have simply do <code>uint32_t majorVersion = cols[MONO_ASSEMBLYREF_MAJOR_VERSION];</code>, assuming you have the correct table.</p>
+<h2 id="getting-the-type-name-and-namespace"><a class="header" href="#getting-the-type-name-and-namespace">Getting the Type Name and Namespace</a></h2>
+<p>Now that I've explained that bit I'll explain the next two lines in the code, you can see they're almost identical, we call <code>mono_metadata_string_heap</code> for both lines, and we're passing in the image, and some value from the columns.</p>
+<p>First we're getting the namespace name by accessing the value stored in the <code>MONO_TYPEDEF_NAMESPACE</code> column, again that value is an <em>index</em> into the string heap, where the name of our namespace is located. If a type doesn't have a namespace, meaning it's in the global namespace, this function will simply return an empty string.</p>
+<p>Next we do almost the exact same thing, except we're getting the value in the <code>MONO_TYPEDEF_NAME</code> column.</p>
+<p>As you can see from the image below there's still a few other columns in the <code>MONO_TABLE_TYPEDEF</code> table, I'm not going to cover them here right now, but I'll make sure to properly cover them at a later date.</p>
+<p><img src="/res/typedef-columns.jpg" alt="TypeDefColumns" /></p>
+<p><strong>Alright!</strong> If you now call this function (<em>after</em> you've loaded the assembly) you should see all types stored in your assembly printed to the console.</p>
+<h2 id="the-module-type"><a class="header" href="#the-module-type">The Module Type</a></h2>
+<p>Now you might've noticed that the very first type printed is called <code>&lt;Module&gt;</code>, and you probably realize that there's no type with that name in your project, so what's going on? Well it's actually a type that's provided by the C# compiler, and all C# DLLs and EXEs have this type.</p>
+<p>Effectively this type represents your <em>entire</em> assembly, your assembly will <em>always</em> have at least one module, although it's possible to create a <a href="https://docs.microsoft.com/en-us/dotnet/framework/app-domains/multifile-assemblies">Multifile Assembly</a> which is an assembly that contains multiple modules. Regardless that doesn't matter here, because we will never use the <code>&lt;Module&gt;</code> class in this guide, and you'll most likely never have to use it if you're making a scripting engine.</p>
+<p>And that's it for this section! If you saw your types printed in the console it's safe to assume that everything works as expected <em>and</em> you've learned a bit more about how C# assemblies stores data, and we can now move on to actually doing something interesting. In the next section we'll be creating an instance of our <code>CSharpTesting</code> class, and we'll even start calling some C# methods!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../first-steps/loading-assemblies.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../first-steps/loading-assemblies.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

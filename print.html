@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="first-steps/testing-assembly-loading.html"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -279,6 +279,204 @@ I may end up covering the other folders at a later date, but I have only recentl
 <h2 id="all-done"><a class="header" href="#all-done">All Done!</a></h2>
 <p>Alright, now you should have all the necessary files, and your project <em>should</em> be configured correctly, but if you don't know how to e.g link the Mono libraries to your project, or add the include directory, well, then <em>maybe</em> you shouldn't be considering embedding Mono just yet.</p>
 <p>Once you've got your project configured and linking with Mono, feel free to move on to the &quot;Setting up the Runtime&quot; section of this guide!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="setting-up-the-runtime"><a class="header" href="#setting-up-the-runtime">Setting up the Runtime</a></h1>
+<p>Now that we've built Mono, gotten all the necessary files, and <em>hopefully</em> setup our project correctly, it's time to start coding! The very first thing we have to do is initialize the Mono runtime.</p>
+<p>In order to properly initialize Mono we have to start by including <code>mono/jit/jit.h</code>, and <code>mono/metadata/assembly.h</code>. Once that's done we have to let Mono know where the .NET libraries are located. The function we'll have to call is <code>mono_set_assemblies_path</code>. Keep in mind that the path provided to this function have to either be an absolute path (e.g <code>D:\dev\Engine\mono\lib</code>), or a path relative to the current working directory (e.g <code>mono/lib</code>).</p>
+<p>So in my case it would look like this:</p>
+<pre><code class="language-cpp">void InitMono()
+{
+    mono_set_assemblies_path(&quot;mono/lib&quot;);
+}
+</code></pre>
+<p>If you don't provide this path to Mono you'll see an error message printed in the console, it would look something like this:
+<img src="first-steps//res/mscorlib-error.jpg" alt="MSCorlibError" /></p>
+<p>I will say that if you don't provide this path, but you have a <strong>MONO_PATH</strong> environment variable that points to the correct folder Mono will attempt to use that path to located <code>mscorlib.dll</code>.</p>
+<p>Once we've told Mono where it can locate mscorlib we can actually start the runtime. We have to call <code>mono_jit_init</code> in order to start the runtime, but you may notice that there's actually another function with a similiar name: <code>mono_jit_init_version</code>, so what's the difference?
+Well the difference has to do with what version of the runtime we use. By using the first function (<code>mono_jit_init</code>) we're telling Mono to use the runtime version referenced by the <em>first</em> assembly that we load, meaning it will automatically detect it. If we use the second function <code>mono_jit_init_version</code> we can specify the <em>exact</em> version of the runtime we want.</p>
+<p>From my experimentation what function we use doesn't have much of an effect, and it's generally speaking safer to let Mono automatically pick the runtime version, so for this guide we'll be using <code>mono_jit_init</code>. We must make sure to give this function a string when calling it, this string essentially represents the name of the runtime.</p>
+<p>When calling this function we get a <code>MonoDomain</code> pointer, it's important that we store that pointer since we have to manually clean it up later on. The interesting thing is that Mono actually stores this pointer internally as well, and according to the Mono developers it doesn't really make sense that we have to keep track of that pointer as well, but that's just the way it is, so make sure to store it somewhere.</p>
+<pre><code class="language-cpp">void InitMono()
+{
+    mono_set_assemblies_path(&quot;mono/lib&quot;);
+
+    MonoDomain* rootDomain = mono_jit_init(&quot;MyScriptRuntime&quot;);
+    if (rootDomain == nullptr)
+    {
+        // Maybe log some error here
+        return;
+    }
+
+    // Store the root domain pointer
+    s_RootDomain = rootDomain;
+}
+</code></pre>
+<p>And that's the basics of initializing the Mono runtime. Naturally as we continue to develop our scripting engine further the initialization process will get more complex, but we'll cover the necessary parts when they're needed.</p>
+<p>Now we're not quite done with the initialization, before we can load our C# assembly and start running code we have to create an <a href="https://docs.microsoft.com/en-us/dotnet/framework/app-domains/application-domains">App Domain</a>.</p>
+<h2 id="creating-an-app-domain"><a class="header" href="#creating-an-app-domain">Creating an App Domain</a></h2>
+<p>Mono makes it trivially easy to create a new App Domain, all we have to do is call <code>mono_domain_create_appdomain</code> and give our App Domain a name. Remember to store the <code>MonoDomain</code> pointer returned by this function somewhere, we'll need it later on. This process will become slightly more complicated in the future but for now we'll just modify our initalization function to look like this:</p>
+<pre><code class="language-cpp">void InitMono()
+{
+    mono_set_assemblies_path(&quot;mono/lib&quot;);
+
+    MonoDomain* rootDomain = mono_jit_init(&quot;MyScriptRuntime&quot;);
+    if (rootDomain == nullptr)
+    {
+        // Maybe log some error here
+        return;
+    }
+
+    // Store the root domain pointer
+    s_RootDomain = rootDomain;
+
+    // Create an App Domain
+    s_AppDomain = mono_domain_create_appdomain(&quot;MyAppDomain&quot;, nullptr);
+    mono_domain_set(s_AppDomain, true);
+}
+</code></pre>
+<p>You may wonder what the second parameter of <code>mono_domain_create_appdomain</code> is, well it allows us to pass a path to a configuration file. We won't be needing this so we can simply pass <code>nullptr</code>.</p>
+<p>Once we've got our <code>MonoDomain</code> pointer we have to set our new App Domain to be the <em>current</em> App Domain, we can do this by calling <code>mono_domain_set</code> and pass our domain. The second parameter simply indicates if we want to force our domain to be set as the current domain. In reality we could probably pass <code>false</code> here since all that parameter does is forcibly set the App Domain even if it's being unloaded, but we'll just go ahead and pass <code>true</code>.</p>
+<p>Now that we've created our AppDomain we can finally start working towards running C# code from C++! All we have to do now is load a C# assembly, which we'll cover in the next section.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="loading-assemblies"><a class="header" href="#loading-assemblies">Loading Assemblies</a></h1>
+<p>In this section we'll cover how you can load a C# assmebly using Mono. First of all you should know that an assembly in C# (and in .NET in general) can be <em>either</em> a DLL or an EXE file. Now before we start writing the loading code we have to have an assembly to load.</p>
+<p>In this example we'll be building our C# project as a Dynamic Link Library, or DLL, Visual Studio calls the project type for DLLs &quot;Class Library&quot; so make sure your C# project has the &quot;Output Type&quot; set to &quot;Class Library&quot;, as shown in the image below:</p>
+<p><img src="first-steps//res/vs-project-type.jpg" alt="VisualStudioProjectType" /></p>
+<h2 id="c-code"><a class="header" href="#c-code">C# Code</a></h2>
+<p>In the beginning we'll simply write some basic C# code that will allow us to make sure our code actually works. To start I'll create a C# class called &quot;CSharpTester&quot;, and we'll add some basic data and methods to it.</p>
+<pre><code class="language-cs">using System;
+
+public class CSharpTesting
+{
+    public float MyPublicFloatVar = 5.0f;
+
+    public void PrintFloatVar()
+    {
+        Console.WriteLine(&quot;MyPublicFloatVar = {0:F}&quot;);
+    }
+
+    private void IncrementFloatVar(float value)
+    {
+        MyPublicFloatVar += value;
+    }
+
+}
+</code></pre>
+<p>For now we won't actually be running any of this code, but we'll be checking that the class exists in the assembly after we've loaded it. This code will also be used to demonstrate a few things that you need to keep in mind when using Mono.</p>
+<p>But for now just go ahead and build your project, you should get a DLL file with your project name somewhere in your project folder, look for a folder called &quot;bin&quot; and you should find it. Remember the file path since we'll need it to load the DLL.</p>
+<h2 id="c-code-1"><a class="header" href="#c-code-1">C++ Code</a></h2>
+<p>So now it's time for us to write the code that will actually load the C# DLL into Mono. Typically in a game engine you'll have two DLLs that you'll need to load, one that contains the game code, and one that's provided by the engine.</p>
+<p>Typically the engine will provide a C# DLL that the game code will link to, this is so that the engine developers can provide a safe API for the user to interact with. Because of this we'll be writing a generic function that will simply load any DLL, this function will take a path to the DLL file as an argument and it will return a pointer to a <code>MonoAssembly</code>.</p>
+<p>Now, there's a lot of ways that you can load an assembly using Mono, but the preferred way is to load the file into an array of bytes and then pass that byte array to Mono directly. I'll get into why this is the preferred method later.</p>
+<p>I'll also provide a function that can load a file into an array of bytes:</p>
+<pre><code class="language-cpp">char* ReadBytes(const std::string&amp; filepath, uint32_t* outSize)
+{
+    std::ifstream stream(filepath, std::ios::binary | std::ios::ate);
+    
+    if (!stream)
+    {
+        // Failed to open the file
+        return nullptr;
+    }
+
+    std::streampos end = stream.tellg();
+    stream.seekg(0, std::ios::beg);
+    uint32_t size = end - stream.tellg();
+    
+    if (size == 0)
+    {
+        // File is empty
+        return nullptr;
+    }
+
+    char* buffer = new char[size];
+    stream.read((char*)buffer, size);
+    stream.close();
+
+    *outSize = size;
+    return buffer;
+}
+</code></pre>
+<p>So, here's the code that loads the C# assembly:</p>
+<pre><code class="language-cpp">MonoAssembly* LoadCSharpAssembly(const std::string&amp; assemblyPath)
+{
+    uint32_t fileSize = 0;
+    char* fileData = ReadBytes(assemblyPath, &amp;fileSize);
+
+    // NOTE: We can't use this image for anything other than loading the assembly because this image doesn't have a reference to the assembly
+    MonoImageOpenStatus status;
+    MonoImage* image = mono_image_open_from_data_full(fileData, fileSize, 1, &amp;status, 0);
+
+    if (status != MONO_IMAGE_OK)
+    {
+        const char* errorMessage = mono_image_strerror(status);
+        // Log some error message using the errorMessage data
+        return nullptr;
+    }
+
+    MonoAssembly* assembly = mono_assembly_load_from_full(image, assemblyPath.c_str(), &amp;status, 0);
+    mono_image_close(image);
+    
+    // Don't forget to free the file data
+    delete[] fileData;
+
+    return assembly;
+}
+</code></pre>
+<p>Now I'll go through and explain this code bit by bit. First we read the bytes of the C# assembly into a <code>char*</code> buffer. After that we need to give Mono the data that we loaded, we can do this by calling <code>mono_image_open_from_data_full</code>. The first two parameters should be self-explanatory, it's just the data and the size of the data. The third parameter tells Mono if we want it to copy the data, or if we'll be responsible for storing it, here we pass <code>1</code>, indicating that Mono will copy the data into an internal buffer. The fourth parameter is a pointer to a <code>MonoImageOpenStatus</code> enum, we can use this value to determine if Mono was able to read the data we passed to it, or if there was an issue somewhere.</p>
+<p>The last parameter is also a boolean value, and if it's set to true, or <code>1</code>, it means that Mono will load our image in &quot;reflection mode&quot;, meaning we can inspect the types, but not run any code. If you're building an application similiar to JetBrains <a href="https://www.jetbrains.com/decompiler/">dotPeek</a> program you'd most likely want to set this parameter to true, but since we want to <em>run</em> the code we'll set it to false, or <code>0</code>.</p>
+<p><code>mono_image_open_from_data_full</code> will return a valid pointer to a <code>MonoImage</code> struct if it successfully interpreted our data, or <code>nullptr</code> if it failed. After we've loaded our data into Mono we'll check that the <code>status</code> variable is set to <code>MONO_IMAGE_OK</code>, and if it's not we'll query Mono for an error message describing what went wrong, we do this using <code>mono_image_strerror</code> which converts our status variable to a more user-friendly error message.</p>
+<p>Now that we have a valid image loaded we'll have to create a <code>MonoAssembly</code> from it, luckily this is really easy, we just have to call <code>mono_assembly_load_from_full</code> and give it the image. If this function succeeds we'll get a pointer to a <code>MonoAssembly</code> struct returned, otherwise it'll return <code>nullptr</code>.</p>
+<p>The first parameter of this function is the image that we got back from Mono, the second parameter is essentially just a name that Mono can use when printing errors, the third parameter is our <code>status</code> variable again. This function will write to our <code>status</code> variable if there's an error, but at this point there really shouldn't be an error generated so we won't check for it.</p>
+<p>The last parameter is the same as the last parameter in <code>mono_image_open_from_data_full</code>, so if you specified <code>1</code> there you should also do that with this function, but in our case we'll set it to <code>0</code>.</p>
+<p>After we've retrieved a <code>MonoAssembly</code> pointer from our image we can (and should) close that image, since it's only used for getting a <code>MonoAssembly</code> pointer, and is useless for anything else. I will note that <code>MonoImage</code>s are used for some other things in Mono, and we'll cover that later, but <em>this</em> image is useless so we need to close it to decrease the reference count.</p>
+<p>And that's it! But because we're good programmers we'll make sure to free the buffer that we loaded, using <code>delete[] fileData;</code>. After that we can simply return our assembly pointer!</p>
+<p>Now you probably want to make sure that the file you're trying to load <em>actually</em> exists, but in this example we're assuming that we'll never try to load a file that doesn't exist on disk.</p>
+<p>Alright, now we have a function capable of loading a C# assembly into the Mono runtime, so now it's time to actually load our assembly and verify that our code works, but we'll cover that in the next section.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="testing-assembly-loading"><a class="header" href="#testing-assembly-loading">Testing Assembly Loading</a></h1>
+<p>So, now we have a function capable of loading a C# assembly. So all we have to do now is make sure it actually works properly. How do we do that? Well, we could of course just check that we get a valid <code>MonoAssembly</code> pointer, but that doesn't strictly mean that everything's working as expected.</p>
+<p>In order to properly test it we're going to be iterating over all the class types defined in our assembly, that way we can see exactly what classes, structs and enums are in there. The way we do this is by iterating through the assembly metadata, which we can do by getting access to the type definitions table.</p>
+<h2 id="the-code"><a class="header" href="#the-code">The Code</a></h2>
+<p>Alright that sounds good in theory, but <em>how</em> do we do that? Well it's surprisingly easy, although the code can look a bit complicated at first.</p>
+<pre><code class="language-cpp">void PrintAssemblyTypes(MonoAssembly* assembly)
+{
+    MonoImage* image = mono_assembly_get_image(assembly);
+    const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(image, MONO_TABLE_TYPEDEF);
+    int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
+
+    for (int32_t i = 0; i &lt; numTypes; i++)
+    {
+        uint32_t cols[MONO_TYPEDEF_SIZE];
+        mono_metadata_decode_row(typeDefinitionsTable, i, cols, MONO_TYPEDEF_SIZE);
+
+        const char* nameSpace = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAMESPACE]);
+        const char* name = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAME]);
+
+        printf(&quot;%s.%s&quot;, nameSpace, name);
+    }
+}
+</code></pre>
+<h2 id="tables"><a class="header" href="#tables">Tables</a></h2>
+<p>And that's how easy it is to iterate through all the type definitions in our assembly! But, what does this code <em>actually</em> do? Well it's actually quite simple, simply put the assembly itself stores all the necessary info about the data it contains in a set of tables, you can find a list of all the tables and their columns <a href="http://docs.go-mono.com/?link=xhtml%3adeploy%2fmono-api-metadata.html">here</a>, scroll down to the &quot;Metadata Tables&quot; section and you'll find a list of them.</p>
+<p>Basically what Mono allows us to do is to iterate through all the rows in each table, in the case of the <code>MONO_TABLE_TYPEDEF</code> table each row represents a type, and the columns contains information about that type. We can get a table from an image by making use of <code>mono_image_get_table_info</code>, and passing in the image and the &quot;id&quot; of the table we want.</p>
+<p>And as you can see from the code we can get the assembly image from an assembly by calling <code>mono_assembly_get_image</code> and passing in the assembly.</p>
+<h2 id="rows-and-columns"><a class="header" href="#rows-and-columns">Rows and Columns</a></h2>
+<p>After we have the table that we want to iterate through we have to get the number of rows, or type definitions in this case, in that table, we can do that by calling <code>mono_table_info_get_rows</code> and passing in the table info pointer.</p>
+<p>We then loop over all rows, and now we have to get all the column values for each row. All columns store their data as unsigned 32-bit integers, and so we start by allocating a stack array called <code>cols</code>, and setting the size of the array to the maximum number of columns for the table we're iterating. Mono provides us with constants that represent the number we need for each table, so in this case we set the size of the array to <code>MONO_TYPEDEF_SIZE</code>.</p>
+<p>In order to populate the array we have to decode the current row in the type definitions table, we can do this by calling <code>mono_metadata_decode_row</code>, and passing in a few parameters, while I think the parameters are self-explanatory I realize that might not be the case for everyone, so I'll go through and explain what each parameter is.</p>
+<p>The first parameter is the actual table that we're iterating over. The second parameter is the row whose columns we want to get. The third parameter is simply the columns array that we allocated, and the last parameter is the size of that array.</p>
+<p>After we've called this function our <code>cols</code> array will now be populated with a bunch of values, and we can now use those values to get some of the data for this type.</p>
+<p>A quick note before I explain the rest of the code: The data stored in this array should be used differently depending on what the column <em>represents</em>, in some cases the value is the value that we want, stored right there in the array, other times the value represents an index into a different data structure somewhere else in memory, in the case of the namespace and name of a given type the columns store indices into the string heap.</p>
+<p>So sometimes you'd do what we're doing here, and using the value to get a string from the string heap, and sometimes you'd use the value as-is, the <code>MONO_ASSEMBLYREF_MAJOR_VERSION</code> is a good example of this, if you wanted to get the major version of an assembly you'd have simply do <code>uint32_t majorVersion = cols[MONO_ASSEMBLYREF_MAJOR_VERSION];</code>, assuming you have the correct table.</p>
+<h2 id="getting-the-type-name-and-namespace"><a class="header" href="#getting-the-type-name-and-namespace">Getting the Type Name and Namespace</a></h2>
+<p>Now that I've explained that bit I'll explain the next two lines in the code, you can see they're almost identical, we call <code>mono_metadata_string_heap</code> for both lines, and we're passing in the image, and some value from the columns.</p>
+<p>First we're getting the namespace name by accessing the value stored in the <code>MONO_TYPEDEF_NAMESPACE</code> column, again that value is an <em>index</em> into the string heap, where the name of our namespace is located. If a type doesn't have a namespace, meaning it's in the global namespace, this function will simply return an empty string.</p>
+<p>Next we do almost the exact same thing, except we're getting the value in the <code>MONO_TYPEDEF_NAME</code> column.</p>
+<p>As you can see from the image below there's still a few other columns in the <code>MONO_TABLE_TYPEDEF</code> table, I'm not going to cover them here right now, but I'll make sure to properly cover them at a later date.</p>
+<p><img src="first-steps//res/typedef-columns.jpg" alt="TypeDefColumns" /></p>
+<p><strong>Alright!</strong> If you now call this function (<em>after</em> you've loaded the assembly) you should see all types stored in your assembly printed to the console.</p>
+<h2 id="the-module-type"><a class="header" href="#the-module-type">The Module Type</a></h2>
+<p>Now you might've noticed that the very first type printed is called <code>&lt;Module&gt;</code>, and you probably realize that there's no type with that name in your project, so what's going on? Well it's actually a type that's provided by the C# compiler, and all C# DLLs and EXEs have this type.</p>
+<p>Effectively this type represents your <em>entire</em> assembly, your assembly will <em>always</em> have at least one module, although it's possible to create a <a href="https://docs.microsoft.com/en-us/dotnet/framework/app-domains/multifile-assemblies">Multifile Assembly</a> which is an assembly that contains multiple modules. Regardless that doesn't matter here, because we will never use the <code>&lt;Module&gt;</code> class in this guide, and you'll most likely never have to use it if you're making a scripting engine.</p>
+<p>And that's it for this section! If you saw your types printed in the console it's safe to assume that everything works as expected <em>and</em> you've learned a bit more about how C# assemblies stores data, and we can now move on to actually doing something interesting. In the next section we'll be creating an instance of our <code>CSharpTesting</code> class, and we'll even start calling some C# methods!</p>
 
                     </main>
 
