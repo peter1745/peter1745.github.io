@@ -18,7 +18,7 @@ public class CSharpTesting
 
     public void PrintFloatVar()
     {
-        Console.WriteLine("MyPublicFloatVar = {0:F}");
+        Console.WriteLine("MyPublicFloatVar = {0:F}", MyPublicFloatVar);
     }
 
     private void IncrementFloatVar(float value)
