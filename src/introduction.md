@@ -17,3 +17,10 @@ Before we get started I just wanted to say that this guide is **not** a guide on
 I'm not the only person who has contributed to this. I've had some help with certain parts of it, so I wanted to make sure to mention anyone that has helped out.
 
 - **Marca**, provided build instructions for Mac OSX
+
+## The Game Engine Series
+As I've mentioned this guide *isn't* meant to teach you how to write a fully fledged scripting engine. But there *is* a series on YouTube that *does* cover writing a scripting engine in C++, the [Game Engine Series](https://www.youtube.com/playlist?list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT) from [The Cherno](https://www.youtube.com/c/TheChernoProject).
+
+The scripting engine that he's writing is based on the scripting engine that I wrote for Hazel, and he does reference this guide as well. I highly recommend watching the C# scripting related episodes if you're interested in how you can design an actual scripting API.
+
+Understandably there's a *lot* of different ways of writing a scripting engine, and there's no "correct" way of doing so, although there are worse ways and better ways, as with everything.
