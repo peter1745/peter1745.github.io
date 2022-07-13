@@ -9,3 +9,4 @@
 	- [Loading Assemblies](./first-steps/loading-assemblies.md)
 	- [Testing Assembly Loading](./first-steps/testing-assembly-loading.md)
 	- [C# Classes](./first-steps/classes.md)
+	- [C# Methods](./first-steps/methods.md)
