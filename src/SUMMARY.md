@@ -8,3 +8,4 @@
 - [First Steps](./first-steps/runtime-setup.md)
 	- [Loading Assemblies](./first-steps/loading-assemblies.md)
 	- [Testing Assembly Loading](./first-steps/testing-assembly-loading.md)
+	- [C# Classes](./first-steps/classes.md)
