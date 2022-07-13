@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="../introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="../introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="../first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="../first-steps/testing-assembly-loading.html" class="active"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="../introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="../introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="../first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="../first-steps/testing-assembly-loading.html" class="active"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="../first-steps/classes.html"><strong aria-hidden="true">2.3.</strong> C# Classes</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -187,7 +187,7 @@
 <h2 id="the-module-type"><a class="header" href="#the-module-type">The Module Type</a></h2>
 <p>Now you might've noticed that the very first type printed is called <code>&lt;Module&gt;</code>, and you probably realize that there's no type with that name in your project, so what's going on? Well it's actually a type that's provided by the C# compiler, and all C# DLLs and EXEs have this type.</p>
 <p>Effectively this type represents your <em>entire</em> assembly, your assembly will <em>always</em> have at least one module, although it's possible to create a <a href="https://docs.microsoft.com/en-us/dotnet/framework/app-domains/multifile-assemblies">Multifile Assembly</a> which is an assembly that contains multiple modules. Regardless that doesn't matter here, because we will never use the <code>&lt;Module&gt;</code> class in this guide, and you'll most likely never have to use it if you're making a scripting engine.</p>
-<p>And that's it for this section! If you saw your types printed in the console it's safe to assume that everything works as expected <em>and</em> you've learned a bit more about how C# assemblies stores data, and we can now move on to actually doing something interesting. In the next section we'll be creating an instance of our <code>CSharpTesting</code> class, and we'll even start calling some C# methods!</p>
+<p>And that's it for this section! If you saw your types printed in the console it's safe to assume that everything works as expected <em>and</em> you've learned a bit more about how C# assemblies stores data, and we can now move on to actually doing something interesting. In the next section we'll be creating an instance of our <code>CSharpTesting</code> class.</p>
 
                     </main>
 
@@ -195,6 +195,9 @@
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="../first-steps/loading-assemblies.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../first-steps/classes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
                     </nav>
@@ -204,6 +207,9 @@
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="../first-steps/loading-assemblies.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../first-steps/classes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
 
