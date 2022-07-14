@@ -4,3 +4,10 @@ language = "en"
 multilingual = false
 src = "src"
 title = "Mono Embedding for Game Engines"
+
+[preprocessor.pagetoc]
+[output.html]
+theme = "theme"
+default-theme="theme"
+additional-css = ["theme/css/pagetoc.css"]
+additional-js  = ["theme/pagetoc.js"]

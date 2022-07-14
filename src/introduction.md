@@ -13,6 +13,8 @@ Yes, Mono *does* have a documentation site for embedding: [http://docs.go-mono.c
 
 Before we get started I just wanted to say that this guide is **not** a guide on building a complete scripting engine, it's just meant to give you the knowledge you *need* to write a scripting engine.
 
+I will also mention that the "First Steps" section only covers the very basics, I'll go into way more depth and show more complex code in a more advanced section later on.
+
 ## Credits
 I'm not the only person who has contributed to this. I've had some help with certain parts of it, so I wanted to make sure to mention anyone that has helped out.
 
