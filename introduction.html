@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible no-js light">
+<html lang="en" class="sidebar-visible no-js theme">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -33,12 +33,13 @@
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/css/pagetoc.css">
     </head>
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
             var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "theme";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -64,7 +65,7 @@
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
             html.classList.remove('no-js')
-            html.classList.remove('light')
+            html.classList.remove('theme')
             html.classList.add(theme);
             html.classList.add('js');
         </script>
@@ -83,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="first-steps/testing-assembly-loading.html"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="first-steps/classes.html"><strong aria-hidden="true">2.3.</strong> C# Classes</a></li><li class="chapter-item expanded "><a href="first-steps/methods.html"><strong aria-hidden="true">2.4.</strong> C# Methods</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="first-steps/testing-assembly-loading.html"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="first-steps/classes.html"><strong aria-hidden="true">2.3.</strong> Classes</a></li><li class="chapter-item expanded "><a href="first-steps/methods.html"><strong aria-hidden="true">2.4.</strong> Methods</a></li><li class="chapter-item expanded "><a href="first-steps/fields.html"><strong aria-hidden="true">2.5.</strong> Fields and Properties</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -101,7 +102,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
@@ -142,6 +143,9 @@
 
                 <div id="content" class="content">
                     <main>
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <h2 id="about-me"><a class="header" href="#about-me">About Me</a></h2>
 <p>Hi, my name is Peter, and I'm a game engine developer from Sweden, I'm also the author of this guide. I've been working on a game engine called <a href="https://www.hazelengine.com/">Hazel</a> for over a year, and one of the things I've worked on is a C# scripting engine, using the Mono library.</p>
@@ -151,6 +155,7 @@
 <p>Yes, Mono <em>does</em> have a documentation site for embedding: <a href="http://docs.go-mono.com/?link=root%3a%2fembed">http://docs.go-mono.com/</a>, but in my experience it's all but useless. There are a few open source (or at least source available) projects out there that have embedded Mono, but there's no real <em>documentation</em> available.</p>
 <p><strong>So</strong>, that's why I decided to create this guide. I've been through the pain of googling for hours to figure out how to do something in Mono, and I figured I could help spare others from that pain.</p>
 <p>Before we get started I just wanted to say that this guide is <strong>not</strong> a guide on building a complete scripting engine, it's just meant to give you the knowledge you <em>need</em> to write a scripting engine.</p>
+<p>I will also mention that the &quot;First Steps&quot; section only covers the very basics, I'll go into way more depth and show more complex code in a more advanced section later on.</p>
 <h2 id="credits"><a class="header" href="#credits">Credits</a></h2>
 <p>I'm not the only person who has contributed to this. I've had some help with certain parts of it, so I wanted to make sure to mention anyone that has helped out.</p>
 <ul>
@@ -192,5 +197,6 @@
         <script src="book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
+        <script type="text/javascript" src="theme/pagetoc.js"></script>
     </body>
 </html>
