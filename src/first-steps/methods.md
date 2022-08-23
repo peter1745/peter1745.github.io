@@ -27,7 +27,7 @@ In this case we'll be using the manual way of getting references to methods, but
 MonoObject* InstantiateClass(const char* namespaceName, const char* className)
 {
     // Get a reference to the class we want to instantiate
-    MonoClass* testingClass = GetClassInAssembly(s_AppAssembly, "", "CSharpTesting");
+    MonoClass* testingClass = GetClassInAssembly(s_AppAssembly, namespaceName, className);
 
     // Allocate an instance of our class
     MonoObject* classInstance = mono_object_new(s_AppDomain, testingClass);
@@ -39,6 +39,8 @@ MonoObject* InstantiateClass(const char* namespaceName, const char* className)
 
     // Call the parameterless (default) constructor
     mono_runtime_object_init(classInstance);
+    
+    return classInstance;
 }
 
 void CallPrintFloatVarMethod(MonoObject* objectInstance)
