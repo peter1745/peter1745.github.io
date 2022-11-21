@@ -2,12 +2,15 @@
 
 const fs = require('fs');
 const http = require('http');
+const path = require('path');
+
+const public = path.join(__dirname, 'public');
 
 http.createServer((req, res) => {
     if (req.url === '/')
         req.url = '/index.html';
 
-    fs.readFile(__dirname + req.url, (err, data) => {
+    fs.readFile(path.join(public, req.url), (err, data) => {
         if (err)
         {
             res.writeHead(404);
