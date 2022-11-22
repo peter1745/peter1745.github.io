@@ -1,0 +1,236 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js theme">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Building Mono - Mono Embedding for Game Engines</title>
+        <!-- Custom HTML head -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40851481-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40851481-2');
+</script>        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/css/pagetoc.css">
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "theme";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('theme')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="../introduction/building-mono.html" class="active"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="../introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="../first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="../first-steps/testing-assembly-loading.html"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="../first-steps/classes.html"><strong aria-hidden="true">2.3.</strong> Classes</a></li><li class="chapter-item expanded "><a href="../first-steps/methods.html"><strong aria-hidden="true">2.4.</strong> Methods</a></li><li class="chapter-item expanded "><a href="../first-steps/fields.html"><strong aria-hidden="true">2.5.</strong> Fields and Properties</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Mono Embedding for Game Engines</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <h1 id="building-mono"><a class="header" href="#building-mono">Building Mono</a></h1>
+<p>Building Mono isn't too hard, but it's a large library, taking up quite a lot of space on your computer, so it will probably take some time to clone, and build it.</p>
+<h2 id="platforms"><a class="header" href="#platforms">Platforms</a></h2>
+<p>Here are some links to the instructions for each platform:</p>
+<ul>
+<li><a href="#windows">Windows</a></li>
+<li><a href="#linux">Linux (Coming Soon!)</a></li>
+<li><a href="#macosx">Mac OSX</a></li>
+</ul>
+<h2 id="cloning-from-github"><a class="header" href="#cloning-from-github">Cloning from GitHub</a></h2>
+<p>Before we can build Mono, we have to clone it from GitHub. You should hopefully know how to do this yourself, but I know <em>someone</em> won't know how to do that so I'm including this section anyway.</p>
+<p>If you don't need a step-by-step guide for this, you should just clone <a href="https://github.com/mono/mono">https://github.com/mono/mono</a>.</p>
+<p>Alright, in order to clone Mono make sure you have a Git client installed, I'll be providing commands for the command-line git client, but you could also use a GUI client.</p>
+<p>In order to clone Mono from the command line, you just run <code>git clone https://github.com/mono/mono</code>, that's it. Yeah I know, this section feels pointless but might as well include it.</p>
+<h2 id="building-classic-mono-from-source"><a class="header" href="#building-classic-mono-from-source">Building classic Mono from source</a></h2>
+<p>Now we get to the fun part: building Mono from source. Mono is a pretty large project so building Mono can take a bit of time. I'll provide build instructions for Windows, MacOS and Linux (I'll be using Linux Mint when building).</p>
+<p>I'll provide the pre-requisites that you'll need to build Mono on the specified platform as to save you some thinking power and pain.</p>
+<h3 id="windows"><a class="header" href="#windows">Windows</a></h3>
+<p>Building Mono on Windows is <em>ridiculously</em> easy, most likely easier than any other platform. I will note that using Visual Studio only works for building the Mono runtime libraries, not the .NET libraries (e.g <code>System.dll</code>, <code>System.Collections.Generic.dll</code>, etc...).</p>
+<p>In my case I won't be building the .NET libraries from source, I'll be getting them by installing Mono locally and copying them from the install directory.</p>
+<p>If you want to build the .NET libraries you'll need access to the <code>make</code> command, which you can use by running a <a href="https://www.cygwin.com/">Cygwin</a> shell.</p>
+<h4 id="pre-requisites"><a class="header" href="#pre-requisites">Pre Requisites</a></h4>
+<ul>
+<li>An installed copy of Mono (might not be required but it's good to have just in case)</li>
+<li>Visual Studio (I'll be using Visual Studio 2022)</li>
+<li>Cygwin or some other tool that let's you use <code>make</code> (Only needed if you want to build the .NET libraries)</li>
+</ul>
+<h4 id="building"><a class="header" href="#building">Building</a></h4>
+<p>In order to build Mono you just need to navigate to <code>mono/msvc/</code> and open up <strong>mono.sln</strong> in Visual Studio. All you need to do now is select the build configuration and the platform to build for.</p>
+<p>I recommend building both the <code>Release</code> and the <code>Debug</code> configuration since only building <code>Release</code> will mean you'll have an even harder time debugging Mono related issues. If you want to build 64-bit or 32-bit doesn't really matter for the sake of this guide, but these days you really don't need to support 32-bit platforms.
+After that just start the build and let it run!</p>
+<p>If you've done everything correctly (which I assume you have since it's not hard building Mono on Windows) you can move on to the &quot;Getting the Necessary Files&quot; chapter.</p>
+<h3 id="linux"><a class="header" href="#linux">Linux</a></h3>
+<p><strong>Coming Soon!</strong></p>
+<h3 id="macosx"><a class="header" href="#macosx">MacOSX</a></h3>
+<p>Building Mono on Mac is very similar to Linux, you still use <code>make</code> and <code>autogen</code>.</p>
+<h4 id="pre-requisites-1"><a class="header" href="#pre-requisites-1">Pre-Requisites</a></h4>
+<ul>
+<li>An installed copy of Mono (only if you don't get <code>monolite</code>)</li>
+<li>Make</li>
+</ul>
+<h4 id="building-1"><a class="header" href="#building-1">Building</a></h4>
+<p>The first step is to open a terminal and navigate to the root <code>mono</code> folder.</p>
+<p>Before you continue, keep in mind that running <code>./autogen.sh</code> will cause Mono to clone all the submodules that it will need to build, this process takes quite a long time. Once you're in the root Mono folder you'll want to start by running this command: <code>./autogen.sh --prefix=&lt;absolutePathToDesiredOutputDirectory&gt; --disable-nls</code>.</p>
+<p>Once that command has finished, you'll want to either install Mono locally, or get <code>monolite</code>. If you have Mono installed locally, just continue to the next step, if you want to use <code>monolite</code> however, you'll have to run: <code>make get-monolite-latest</code> in order to get it.</p>
+<p>Once you have Mono or <code>monolite</code> you'll want to run <code>make</code>, and then <code>make install</code> to build Mono.</p>
+<p>All the necessary libraries should've been placed in the folder you specified as part of the <code>--prefix</code> flag.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../introduction/about-mono.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../introduction/necessary-files.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../introduction/about-mono.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../introduction/necessary-files.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript" src="../theme/pagetoc.js"></script>
+    </body>
+</html>

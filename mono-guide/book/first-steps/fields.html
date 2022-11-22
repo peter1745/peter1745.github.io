@@ -1,0 +1,513 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js theme">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Fields and Properties - Mono Embedding for Game Engines</title>
+        <!-- Custom HTML head -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40851481-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40851481-2');
+</script>        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/css/pagetoc.css">
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "theme";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('theme')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="../introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="../introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="../first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="../first-steps/testing-assembly-loading.html"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="../first-steps/classes.html"><strong aria-hidden="true">2.3.</strong> Classes</a></li><li class="chapter-item expanded "><a href="../first-steps/methods.html"><strong aria-hidden="true">2.4.</strong> Methods</a></li><li class="chapter-item expanded "><a href="../first-steps/fields.html" class="active"><strong aria-hidden="true">2.5.</strong> Fields and Properties</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Mono Embedding for Game Engines</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <h1 id="fields-and-properties"><a class="header" href="#fields-and-properties">Fields and Properties</a></h1>
+<p>In this section we'll cover how we can get a reference to, and interact with <em>both</em> C# fields and properties. The only reason why I'll cover properties alongside fields is because Mono let's us interact with properties as if they were regular fields (almost), even though properties are essentially just syntactical sugar around a field and 2 methods.</p>
+<p>If you want to read up more on properties in C# check <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/properties">this</a> article from the Microsoft Docs.</p>
+<p>Now as with most things in Mono there's several ways of getting a reference to a C# field or property, and which one you'll use depends on if you want to iterate through all fields and properties, or if you want to get any specific field or property. It's also important to note that as with methods we don't get a field or property from an instance of class, but rather from the class itself, and then we simply access the field or property <em>using</em> the class instance.</p>
+<p>Alright now that we understand that it's time to take a look at the code, you'll probably notice that I've changed the C# class code a bit.</p>
+<h2 id="getting-references-to-fields-and-properties"><a class="header" href="#getting-references-to-fields-and-properties">Getting References to Fields and Properties</a></h2>
+<pre><code class="language-cs">using System;
+
+public class CSharpTesting
+{
+    public float MyPublicFloatVar = 5.0f;
+
+    private string m_Name = &quot;Hello&quot;;
+    public string Name
+    {
+        get =&gt; m_Name;
+        set
+        {
+            m_Name = value;
+            MyPublicFloatVar += 5.0f;
+        }
+    }
+
+    public void PrintFloatVar()
+    {
+        Console.WriteLine(&quot;MyPublicFloatVar = {0:F}&quot;, MyPublicFloatVar);
+    }
+
+    private void IncrementFloatVar(float value)
+    {
+        MyPublicFloatVar += value;
+    }
+
+}
+</code></pre>
+<p>And on the C++ side of things:</p>
+<pre><code class="language-cpp">MonoObject* testingInstance = InstantiateClass(&quot;&quot;, &quot;CSharpTesting&quot;);
+MonoClass* testingClass = mono_object_get_class(testingInstance);
+
+// Get a reference to the public field called &quot;MyPublicFloatVar&quot;
+MonoClassField* floatField = mono_class_get_field_from_name(testingClass, &quot;MyPublicFloatVar&quot;);
+
+// Get a reference to the private field called &quot;m_Name&quot;
+MonoClassField* nameField = mono_class_get_field_from_name(testingClass, &quot;m_Name&quot;);
+
+// Get a reference to the public property called &quot;Name&quot;
+MonoProperty* nameProperty = mono_class_get_property_from_name(testingClass, &quot;Name&quot;);
+
+// Do something
+
+</code></pre>
+<h3 id="explanation"><a class="header" href="#explanation">Explanation</a></h3>
+<p>Now we have some <em>very</em> basic code that allows us to get a reference to all the fields an properties we want.</p>
+<p>Before I show you how we can interact with them I want to take a moment to explain something: Mono does <strong>not</strong> care about the accessibility of classes, methods, fields or properties that we want to access.</p>
+<p>Do you want to set the value of a private field? Mono let's you. Want to set a private property to <code>null</code> in the middle of an update loop and crash the entire application? You can do that. Mono does <em>not</em> care.</p>
+<p>Which of course means that it's <em>our</em> responsibility to respect the accessibility of all of those. Now, I'm not saying that you should completely ignore non-public fields or properties, it can be very useful to be able to access those for debuggability reasons.</p>
+<p>But what I <em>am</em> saying is that your scripting engine should <em>never</em> be able to set the value of a non-public field or property <em>unless</em> the writer of that code explicitly allows it.</p>
+<p>You can for an example add a C# attribute that the user can add to their private fields that tells the scripting engine that it can set the value of that field, in Hazel we have an attribute called <code>ShowInEditor</code> which allows the engine to set the value of that field. Unity has <code>SerializeField</code> which does the same.</p>
+<p>Alright, now let's see how we can get e.g the accessibility of the fields and properties that we just retrieved.</p>
+<h2 id="checking-accesibility"><a class="header" href="#checking-accesibility">Checking Accesibility</a></h2>
+<pre><code class="language-cpp">
+enum class Accessibility : uint8_t
+{
+    None = 0,
+    Private = (1 &lt;&lt; 0),
+    Internal = (1 &lt;&lt; 1),
+    Protected = (1 &lt;&lt; 2),
+    Public = (1 &lt;&lt; 3)
+};
+
+// Gets the accessibility level of the given field
+uint8_t GetFieldAccessibility(MonoClassField* field)
+{
+    uint8_t accessibility = (uint8_t)Accessibility::None;
+    uint32_t accessFlag = mono_field_get_flags(field) &amp; MONO_FIELD_ATTR_FIELD_ACCESS_MASK;
+
+    switch (accessFlag)
+    {
+        case MONO_FIELD_ATTR_PRIVATE:
+        {
+            accessibility = (uint8_t)Accessibility::Private;
+            break;
+        }
+        case MONO_FIELD_ATTR_FAM_AND_ASSEM:
+        {
+            accessibility |= (uint8_t)Accessibility::Protected;
+            accessibility |= (uint8_t)Accessibility::Internal;
+            break;
+        }
+        case MONO_FIELD_ATTR_ASSEMBLY:
+        {
+            accessibility = (uint8_t)Accessibility::Internal;
+            break;
+        }
+        case MONO_FIELD_ATTR_FAMILY:
+        {
+            accessibility = (uint8_t)Accessibility::Protected;
+            break;
+        }
+        case MONO_FIELD_ATTR_FAM_OR_ASSEM:
+        {
+            accessibility |= (uint8_t)Accessibility::Private;
+            accessibility |= (uint8_t)Accessibility::Protected;
+            break;
+        }
+        case MONO_FIELD_ATTR_PUBLIC:
+        {
+            accessibility = (uint8_t)Accessibility::Public;
+            break;
+        }
+    }
+
+    return accessibility;
+}
+
+// Gets the accessibility level of the given property
+uint8_t GetPropertyAccessbility(MonoProperty* property)
+{
+    uint8_t accessibility = (uint8_t)Accessibility::None;
+    
+    // Get a reference to the property's getter method
+    MonoMethod* propertyGetter = mono_property_get_get_method(property);
+    if (propertyGetter != nullptr)
+    {
+        // Extract the access flags from the getters flags
+        uint32_t accessFlag = mono_method_get_flags(propertyGetter, nullptr) &amp; MONO_METHOD_ATTR_ACCESS_MASK;
+
+        switch (accessFlag)
+        {
+            case MONO_FIELD_ATTR_PRIVATE:
+            {
+                accessibility = (uint8_t)Accessbility::Private;
+                break;
+            }
+            case MONO_FIELD_ATTR_FAM_AND_ASSEM:
+            {
+                accessibility |= (uint8_t)Accessbility::Protected;
+                accessibility |= (uint8_t)Accessbility::Internal;
+                break;
+            }
+            case MONO_FIELD_ATTR_ASSEMBLY:
+            {
+                accessibility = (uint8_t)Accessbility::Internal;
+                break;
+            }
+            case MONO_FIELD_ATTR_FAMILY:
+            {
+                accessibility = (uint8_t)Accessbility::Protected;
+                break;
+            }
+            case MONO_FIELD_ATTR_FAM_OR_ASSEM:
+            {
+                accessibility |= (uint8_t)Accessibility::Private;
+                accessibility |= (uint8_t)Accessibility::Protected;
+                break;
+            }
+            case MONO_FIELD_ATTR_PUBLIC:
+            {
+                accessibility = (uint8_t)Accessbility::Public;
+                break;
+            }
+        }
+    }
+
+    // Get a reference to the property's setter method
+    MonoMethod* propertySetter = mono_property_get_set_method(property);
+    if (propertySetter != nullptr)
+    {
+        // Extract the access flags from the setters flags
+        uint32_t accessFlag = mono_method_get_flags(propertySetter, nullptr) &amp; MONO_METHOD_ATTR_ACCESS_MASK;
+        if (accessFlag != MONO_FIELD_ATTR_PUBLIC)
+            accessibility = (uint8_t)Accessibility::Private;
+    }
+    else
+    {
+        accessibility = (uint8_t)Accessibility::Private;
+    }
+
+    return accessibility;
+}
+
+// ...
+
+MonoObject* testingInstance = InstantiateClass(&quot;&quot;, &quot;CSharpTesting&quot;);
+MonoClass* testingClass = mono_object_get_class(testingInstance);
+
+// Get a reference to the public field called &quot;MyPublicFloatVar&quot;
+MonoClassField* floatField = mono_class_get_field_from_name(testingClass, &quot;MyPublicFloatVar&quot;);
+uint8_t floatFieldAccessibility = GetFieldAccessibility(floatField);
+
+if (floatFieldAccessibility &amp; (uint8_t)Accessibility::Public)
+{
+    // We can safely write a value to this
+}
+
+// Get a reference to the private field called &quot;m_Name&quot;
+MonoClassField* nameField = mono_class_get_field_from_name(testingClass, &quot;m_Name&quot;);
+uint8_t nameFieldAccessibility = GetFieldAccessibility(nameField);
+
+if (nameFieldAccessibility &amp; (uint8_t)Accessibility::Private)
+{
+    // We shouldn't write to this field
+}
+
+// Get a reference to the public property called &quot;Name&quot;
+MonoProperty* nameProperty = mono_class_get_property_from_name(testingClass, &quot;Name&quot;);
+uint8_t namePropertyAccessibility = GetPropertyAccessibility(nameProperty);
+
+if (namePropertyAccessibility &amp; (uint8_t)Accessibility::Public)
+{
+    // We can safely write a value to the field using this property
+}
+
+// Do something
+
+</code></pre>
+<h3 id="explanation-1"><a class="header" href="#explanation-1">Explanation</a></h3>
+<p>Now, I know that was a lot of code, but I <em>highly</em> recommend that you make sure you don't write to non-public variables unless the person who wrote the code allows it, since they probably don't expect the scripting engine to do so normally.</p>
+<p>You may notice that we store the accessibility in a bit field, the reason for this is because C# allows you to mark class fields and properties as <code>protected internal</code> or <code>private protected</code>. In which case it's more efficient for us to store e.g both <code>Accessibility::Protected</code> <em>and</em> <code>Accessibility::Internal</code> in the same variable. Now it's entirely possible that you only care if the field / property is <em>public</em> or not, in which case you could just return a bool and call the function e.g <code>IsFieldPublic</code> / <code>IsPropertyPublic</code>.</p>
+<h4 id="getfieldaccessibility"><a class="header" href="#getfieldaccessibility">GetFieldAccessibility</a></h4>
+<p>So how does <code>GetFieldAccessibility</code> work? Well it's very simple, we start by retrieving all the flags set on the passed field (which stores more than just accessibility data), and then we extract the accessibility data from that by using the bitwise AND operator on the flags and the <code>MONO_FIELD_ATTR_FIELD_ACCESS_MASK</code> mask.</p>
+<p>This will give us a value that represents one of these possible access types:</p>
+<ul>
+<li>MONO_FIELD_ATTR_PRIVATE</li>
+<li>MONO_FIELD_ATTR_FAM_AND_ASSEM</li>
+<li>MONO_FIELD_ATTR_ASSEMBLY</li>
+<li>MONO_FIELD_ATTR_FAMILY</li>
+<li>MONO_FIELD_ATTR_FAM_OR_ASSEM</li>
+<li>MONO_FIELD_ATTR_PUBLIC</li>
+</ul>
+<p>You can look at the code if you're curios as to what each of these represents. So, we do a <code>switch</code> on the access flag, and check for each of these values, then simply assign the correct <code>Accessibility</code> value to the <code>accessibility</code> variable depending on which <code>case</code> statement we hit.</p>
+<h4 id="getpropertyaccessibility"><a class="header" href="#getpropertyaccessibility">GetPropertyAccessibility</a></h4>
+<p>As you can probably tell from the code getting the accessibility of a property isn't <em>quite</em> as easy as getting it from a field. The reason for this is because a property essentially represents two <em>methods</em>. A getter and a setter. Meaning we can't directly query the accessibility of the property, but rather we have to query the accessibility of the <em>methods</em>. This is made even more complicated by the fact that that properties are not <em>required</em> to have <em>both</em> a getter <strong>and</strong> a setter, only one is required. And if you create an auto-property, e.g <code>public string MyProp =&gt; m_MyValue;</code> C# will only generate a getter, not a setter.</p>
+<p>So, here's how that works. We start by getting a reference to the getter method, which we can do easily by calling <code>mono_property_get_get_method</code> and passing in the property. We then get the accessibility flags from that getter (if it exists) by calling <code>mono_method_get_flags</code> and passing in the getter method, as well as <code>nullptr</code>. That last parameter simply represents the method implementation flags. If you're curios about what these are you can check <a href="https://docs.microsoft.com/en-us/dotnet/api/system.reflection.methodimplattributes?view=netframework-4.7.2">this</a> article. We're passing <code>nullptr</code> because we're not interested in those flags right now.</p>
+<p>And just like we did in <code>GetFieldAccessibility</code> we perform a bitwise AND operation to get the accessibility flag, perform a <code>switch</code> on that and store the result in the <code>accessibility</code> variable.</p>
+<p>After we've done that we do something similiar with the setter, assuming it exists, the difference is that for the setter we only check if it's <em>not</em> public, in which case we set the <code>accessiblity</code> variable to <code>Accessibility::Private</code>, since we can't write to the property if the setter is private. We also set the accessiblity to private if there is no setter.</p>
+<p>Another difference between the getter and setter is that for the setter we obviously have to call <code>mono_property_get_set_method</code> instead of <code>mono_property_get_get_method</code>.</p>
+<h2 id="setting-and-getting-values"><a class="header" href="#setting-and-getting-values">Setting and Getting Values</a></h2>
+<p>Alright after that very lengthy talk about accessibility it's finally time to set and get some values! Now this is can be a <em>very</em> complex topic, especially when you start dealing with actually marshalling data, we won't be dealing with that too much right now though.</p>
+<p>We'll start by getting and setting the value of <code>MyPublicFloatVar</code>, and then we'll move on to doing the same for the <code>Name</code> property.</p>
+<pre><code class="language-cpp">bool CheckMonoError(MonoError&amp; error)
+{
+	bool hasError = !mono_error_ok(&amp;error);
+	if (hasError)
+	{
+		unsigned short errorCode = mono_error_get_error_code(&amp;error);
+		const char* errorMessage = mono_error_get_message(&amp;error);
+        printf(&quot;Mono Error!\n&quot;);
+        printf(&quot;\tError Code: %hu\n&quot;, errorCode);
+        printf(&quot;\tError Message: %s\n&quot;, errorMessage);
+		mono_error_cleanup(&amp;error);
+	}
+	return hasError;
+}
+
+std::string MonoStringToUTF8(MonoString* monoString)
+{
+	if (monoString == nullptr || mono_string_length(monoString) == 0)
+		return &quot;&quot;;
+
+	MonoError error;
+	char* utf8 = mono_string_to_utf8_checked(monoString, &amp;error);
+	if (CheckMonoError(error))
+		return &quot;&quot;;
+	std::string result(utf8);
+	mono_free(utf8);
+	return result;
+}
+
+MonoObject* testingInstance = InstantiateClass(&quot;&quot;, &quot;CSharpTesting&quot;);
+MonoClass* testingClass = mono_object_get_class(testingInstance);
+
+MonoClassField* floatField = mono_class_get_field_from_name(testingClass, &quot;MyPublicFloatVar&quot;);
+
+// Get the value of MyPublicFloatVar from the testingInstance object
+float value;
+mono_field_get_value(testingInstance, floatField, &amp;value);
+
+// Increment value by 10 and assign it back to the variable
+value += 10.0f;
+mono_field_set_value(testingInstance, floatField, &amp;value);
+
+MonoProperty* nameProperty = mono_class_get_property_from_name(testingClass, &quot;Name&quot;);
+
+// Get the value of Name by invoking the getter method
+MonoString* nameValue = (MonoString*)mono_property_get_value(nameProperty, testingInstance, nullptr, nullptr);
+std::string nameStr = MonoStringToUTF8(nameValue);
+
+// Modify and assign the value back to the property by invoking the setter method
+nameStr += &quot;, World!&quot;;
+nameValue = mono_string_new(s_AppDomain, nameStr.c_str());
+mono_property_set_value(nameProperty, testingInstance, (void**)&amp;nameValue, nullptr);
+
+</code></pre>
+<h3 id="explanation-2"><a class="header" href="#explanation-2">Explanation</a></h3>
+<h4 id="fields"><a class="header" href="#fields">Fields</a></h4>
+<p>So, there's a lot to unpack here. We'll start with the <code>mono_field_get_value</code> function. It takes three parameters, the first one being the class instance that we want to get the value from, the second one being the field we want to get the value from, and the third being a pointer to a variable that will hold the value C++ side.</p>
+<p>One of the most important things you have to understand here is the difference between getting a value type like a float, or an int or even a struct, and getting a reference type like a class.
+If you're getting a value type as long as the value isn't boxed, like we're doing, you can simply declare a variable of the C++ equivalent type and pass the memory address of that variable. The size of the C++ type <em>has</em> to match the size of the C# type though, and if you're using a struct the layout has to match as well.</p>
+<p>If you're getting a reference type though you have to declare a <code>MonoObject</code> pointer, since reference types are <em>always</em> allocated on the heap.</p>
+<p>Alright, with that out of the way we can increment the value and reassign it to the field by calling <code>mono_field_set_value</code>, passing in the class instance, the field and the memory address of the variable, assuming it's a value type.</p>
+<p>If you wanted to confirm that the C# field got updated correctly you could simply retrieve the value again and check that. Naturally you'd probably want to have a flexible system set up that will handle these conversions in a better way, and that adds a degree of type-safety since Mono will simply accept the value as long as the size of it matches the C# field, and it will most likely not tell you that anything's wrong.</p>
+<h4 id="properties"><a class="header" href="#properties">Properties</a></h4>
+<p>Alright, now it's time to get to how we get and set values when dealing with properties, unfortunately it's quite a bit different from dealing with fields. I will not be explaining the <code>CheckMonoError</code> or the <code>MonoStringToUTF8</code> in detail, I'll leave that for later. But in short the <code>MonoStringToUTF8</code> simply takes a <code>MonoString</code> pointer, which simply holds a pointer to the C# managed string, and it then copies that into unmanaged memory and returns an <code>std::string</code>.</p>
+<p>And <code>CheckMonoError</code> simply extracts an error code and message from the given <code>MonoError</code> struct and then logs that to the console.</p>
+<p>First of all we call <code>mono_property_get_value</code>, which will invoke the properties getter method for us. The first two parameters are simply the property itself and the class instance. The last two parameters, where we pass nullptr represent any parameters that the getter method might expect, and lastly a pointer to a <code>MonoException*</code> that we can get back from the method in case it throws one. The third parameter doesn't really make sense in my opinion since a property's getter method <em>can't</em> take any parameters that I'm aware of, so I'll always pass <code>nullptr</code>.</p>
+<p>As you can see we're getting a string, and because of that we simply get a pointer to a <code>MonoString</code> struct, which holds a pointer to the C# string, in managed memory. It's important to note that <code>mono_property_get_value</code> returns a <code>MonoObject</code> pointer, which in the case of a string should simply be cast to a <code>MonoString</code> pointer.</p>
+<p>In the case of e.g a value type it will return the value boxed inside a <code>MonoObject</code>, meaning we'll have to unbox it. I <em>highly</em> recommend you read up on boxing and unboxing <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/types/boxing-and-unboxing">here</a>.</p>
+<p>But since in this case we're getting a string we simply cast it, and then convert it to an <code>std::string</code>. As you can see we do use <code>mono_string_to_utf8_checked</code>, and I wanted to mention that if there is a &quot;checked&quot; version of a Mono function available you should <strong>always</strong> use that one, and <strong>never</strong> the unchecked version. This function also returns a pointer to a buffer, and we're in charge of freeing it after we're done with it. So keep that in mind.</p>
+<p>If you want to see how to deal with unboxing value types like floats, see the code I've written below.</p>
+<p>Alright, now that we've got our string and we've modified it, it's time to assing it back to C#. As I'm sure you're aware we're doing a <em>lot</em> of copying here, but don't worry too much about it since you most likely won't be getting and setting C# values from C++ every frame.</p>
+<p>In order to invoke the setter function of the property we call <code>mono_property_set_value</code>, and just like with the getter we pass the property and the class instance. Then we have to pass the value itself. The last parameter is again a pointer to a <code>MonoObject*</code>, which will contain any exceptions thrown by the setter. I'm passing <code>nullptr</code> here again.</p>
+<p>The important thing to understand about <code>mono_property_set_value</code> is that you <em>cannot</em> pass the memory address of value types directly like you can with <code>mono_field_set</code>. This function will crash if you do.</p>
+<p>What you need to do instead is create an array of <code>void*</code> and store the address in that array. I'm not sure why this is the case but it is. So you'd something along the lines of <code>void* data[] = { &amp;myValueTypeData };</code> and then pass that array like this: <code>mono_property_set_value(prop, instance, data, nullptr);</code>.</p>
+<p>In the case of a <code>MonoObject*</code> or a <code>MonoString*</code> you can simply pass the memory address and cast it to a <code>void**</code>. Although I do recommend going with the <code>void*</code> array approach, since that works at all times.</p>
+<p>You can probably tell that in the example above we call <code>mono_string_new</code>, and pass the AppDomain as well as the C string in order to construct a new <code>MonoString</code>. We do this because we can't, and shouldn't attempt to modify the <code>MonoString</code> we got from the property, I won't go into <em>too</em> much detail on strings because I'll cover them in-depth later on.</p>
+<h3 id="dealing-with-value-types-and-properties"><a class="header" href="#dealing-with-value-types-and-properties">Dealing with Value Types and Properties</a></h3>
+<pre><code class="language-cpp">MonoProperty* floatProperty = mono_class_get_property_from_name(testingClass, &quot;MyFloatProperty&quot;);
+
+// Get the value of Name by invoking the getter method
+MonoObject* floatValueObj = mono_property_get_value(floatProperty, testingInstance, nullptr, nullptr);
+float floatValue = *(float*)mono_object_unbox(floatValueObj);
+
+// Modify and assign the value back to the property by invoking the setter method
+floatValue += 10.0f;
+void* data[] = { &amp;floatValue };
+mono_property_set_value(nameProperty, testingInstance, data, nullptr);
+</code></pre>
+<p>Alright! Now we're done with the <em>basics</em> of fields and properties. <em>Yes, I know it's ironic that I call this the basics considering the length of this article but it's important that you really understand how it works</em>.</p>
+<p>There is so much more that I'd like to cover when it comes to dealing with fields and properties, but I have to restrain myself or this article will be 50,000 paragraphs. In the next section we'll cover Internal Calls, which will allow C# code to call C++ functions.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../first-steps/methods.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../first-steps/methods.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript" src="../theme/pagetoc.js"></script>
+    </body>
+</html>

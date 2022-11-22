@@ -1,0 +1,284 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js theme">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Loading Assemblies - Mono Embedding for Game Engines</title>
+        <!-- Custom HTML head -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40851481-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40851481-2');
+</script>        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/css/pagetoc.css">
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "theme";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('theme')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="../introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="../introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="../first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../first-steps/loading-assemblies.html" class="active"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="../first-steps/testing-assembly-loading.html"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="../first-steps/classes.html"><strong aria-hidden="true">2.3.</strong> Classes</a></li><li class="chapter-item expanded "><a href="../first-steps/methods.html"><strong aria-hidden="true">2.4.</strong> Methods</a></li><li class="chapter-item expanded "><a href="../first-steps/fields.html"><strong aria-hidden="true">2.5.</strong> Fields and Properties</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Mono Embedding for Game Engines</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <h1 id="loading-assemblies"><a class="header" href="#loading-assemblies">Loading Assemblies</a></h1>
+<p>In this section we'll cover how you can load a C# assmebly using Mono. First of all you should know that an assembly in C# (and in .NET in general) can be <em>either</em> a DLL or an EXE file. Now before we start writing the loading code we have to have an assembly to load.</p>
+<p>In this example we'll be building our C# project as a Dynamic Link Library, or DLL, Visual Studio calls the project type for DLLs &quot;Class Library&quot; so make sure your C# project has the &quot;Output Type&quot; set to &quot;Class Library&quot;, as shown in the image below:</p>
+<p><img src="/res/vs-project-type.jpg" alt="VisualStudioProjectType" /></p>
+<h2 id="c-code"><a class="header" href="#c-code">C# Code</a></h2>
+<p>In the beginning we'll simply write some basic C# code that will allow us to make sure our code actually works. To start I'll create a C# class called &quot;CSharpTester&quot;, and we'll add some basic data and methods to it.</p>
+<pre><code class="language-cs">using System;
+
+public class CSharpTesting
+{
+    public float MyPublicFloatVar = 5.0f;
+
+    public void PrintFloatVar()
+    {
+        Console.WriteLine(&quot;MyPublicFloatVar = {0:F}&quot;, MyPublicFloatVar);
+    }
+
+    private void IncrementFloatVar(float value)
+    {
+        MyPublicFloatVar += value;
+    }
+
+}
+</code></pre>
+<p>For now we won't actually be running any of this code, but we'll be checking that the class exists in the assembly after we've loaded it. This code will also be used to demonstrate a few things that you need to keep in mind when using Mono.</p>
+<p>But for now just go ahead and build your project, you should get a DLL file with your project name somewhere in your project folder, look for a folder called &quot;bin&quot; and you should find it. Remember the file path since we'll need it to load the DLL.</p>
+<h2 id="c-code-1"><a class="header" href="#c-code-1">C++ Code</a></h2>
+<p>So now it's time for us to write the code that will actually load the C# DLL into Mono. Typically in a game engine you'll have two DLLs that you'll need to load, one that contains the game code, and one that's provided by the engine.</p>
+<p>Typically the engine will provide a C# DLL that the game code will link to, this is so that the engine developers can provide a safe API for the user to interact with. Because of this we'll be writing a generic function that will simply load any DLL, this function will take a path to the DLL file as an argument and it will return a pointer to a <code>MonoAssembly</code>.</p>
+<p>Now, there's a lot of ways that you can load an assembly using Mono, but the preferred way is to load the file into an array of bytes and then pass that byte array to Mono directly. I'll get into why this is the preferred method later.</p>
+<p>I'll also provide a function that can load a file into an array of bytes:</p>
+<pre><code class="language-cpp">char* ReadBytes(const std::string&amp; filepath, uint32_t* outSize)
+{
+    std::ifstream stream(filepath, std::ios::binary | std::ios::ate);
+    
+    if (!stream)
+    {
+        // Failed to open the file
+        return nullptr;
+    }
+
+    std::streampos end = stream.tellg();
+    stream.seekg(0, std::ios::beg);
+    uint32_t size = end - stream.tellg();
+    
+    if (size == 0)
+    {
+        // File is empty
+        return nullptr;
+    }
+
+    char* buffer = new char[size];
+    stream.read((char*)buffer, size);
+    stream.close();
+
+    *outSize = size;
+    return buffer;
+}
+</code></pre>
+<p>So, here's the code that loads the C# assembly:</p>
+<pre><code class="language-cpp">MonoAssembly* LoadCSharpAssembly(const std::string&amp; assemblyPath)
+{
+    uint32_t fileSize = 0;
+    char* fileData = ReadBytes(assemblyPath, &amp;fileSize);
+
+    // NOTE: We can't use this image for anything other than loading the assembly because this image doesn't have a reference to the assembly
+    MonoImageOpenStatus status;
+    MonoImage* image = mono_image_open_from_data_full(fileData, fileSize, 1, &amp;status, 0);
+
+    if (status != MONO_IMAGE_OK)
+    {
+        const char* errorMessage = mono_image_strerror(status);
+        // Log some error message using the errorMessage data
+        return nullptr;
+    }
+
+    MonoAssembly* assembly = mono_assembly_load_from_full(image, assemblyPath.c_str(), &amp;status, 0);
+    mono_image_close(image);
+    
+    // Don't forget to free the file data
+    delete[] fileData;
+
+    return assembly;
+}
+</code></pre>
+<p>Now I'll go through and explain this code bit by bit. First we read the bytes of the C# assembly into a <code>char*</code> buffer. After that we need to give Mono the data that we loaded, we can do this by calling <code>mono_image_open_from_data_full</code>. The first two parameters should be self-explanatory, it's just the data and the size of the data. The third parameter tells Mono if we want it to copy the data, or if we'll be responsible for storing it, here we pass <code>1</code>, indicating that Mono will copy the data into an internal buffer. The fourth parameter is a pointer to a <code>MonoImageOpenStatus</code> enum, we can use this value to determine if Mono was able to read the data we passed to it, or if there was an issue somewhere.</p>
+<p>The last parameter is also a boolean value, and if it's set to true, or <code>1</code>, it means that Mono will load our image in &quot;reflection mode&quot;, meaning we can inspect the types, but not run any code. If you're building an application similiar to JetBrains <a href="https://www.jetbrains.com/decompiler/">dotPeek</a> program you'd most likely want to set this parameter to true, but since we want to <em>run</em> the code we'll set it to false, or <code>0</code>.</p>
+<p><code>mono_image_open_from_data_full</code> will return a valid pointer to a <code>MonoImage</code> struct if it successfully interpreted our data, or <code>nullptr</code> if it failed. After we've loaded our data into Mono we'll check that the <code>status</code> variable is set to <code>MONO_IMAGE_OK</code>, and if it's not we'll query Mono for an error message describing what went wrong, we do this using <code>mono_image_strerror</code> which converts our status variable to a more user-friendly error message.</p>
+<p>Now that we have a valid image loaded we'll have to create a <code>MonoAssembly</code> from it, luckily this is really easy, we just have to call <code>mono_assembly_load_from_full</code> and give it the image. If this function succeeds we'll get a pointer to a <code>MonoAssembly</code> struct returned, otherwise it'll return <code>nullptr</code>.</p>
+<p>The first parameter of this function is the image that we got back from Mono, the second parameter is essentially just a name that Mono can use when printing errors, the third parameter is our <code>status</code> variable again. This function will write to our <code>status</code> variable if there's an error, but at this point there really shouldn't be an error generated so we won't check for it.</p>
+<p>The last parameter is the same as the last parameter in <code>mono_image_open_from_data_full</code>, so if you specified <code>1</code> there you should also do that with this function, but in our case we'll set it to <code>0</code>.</p>
+<p>After we've retrieved a <code>MonoAssembly</code> pointer from our image we can (and should) close that image, since it's only used for getting a <code>MonoAssembly</code> pointer, and is useless for anything else. I will note that <code>MonoImage</code>s are used for some other things in Mono, and we'll cover that later, but <em>this</em> image is useless so we need to close it to decrease the reference count.</p>
+<p>And that's it! But because we're good programmers we'll make sure to free the buffer that we loaded, using <code>delete[] fileData;</code>. After that we can simply return our assembly pointer!</p>
+<p>Now you probably want to make sure that the file you're trying to load <em>actually</em> exists, but in this example we're assuming that we'll never try to load a file that doesn't exist on disk.</p>
+<p>Alright, now we have a function capable of loading a C# assembly into the Mono runtime, so now it's time to actually load our assembly and verify that our code works, but we'll cover that in the next section.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../first-steps/runtime-setup.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../first-steps/testing-assembly-loading.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../first-steps/runtime-setup.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../first-steps/testing-assembly-loading.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript" src="../theme/pagetoc.js"></script>
+    </body>
+</html>
