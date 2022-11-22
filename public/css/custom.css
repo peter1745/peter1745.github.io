@@ -17,6 +17,7 @@ footer {
 
 .navbar {
   --bs-navbar-brand-color: #dfdfdf !important;
+  --bs-navbar-brand-hover-color: #7a7a7a !important;
   --bs-navbar-color: #dfdfdf !important;
   --bs-navbar-hover-color: #7a7a7a !important;
   --bs-navbar-disabled-color: #555 !important;
