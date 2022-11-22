@@ -18,7 +18,9 @@ jobs:
         with:
           mdbook-version: 'latest'
 
-      - run: mdbook build
+      - name: Build Book
+        working-directory: ./public/mono-guide
+        run: mdbook build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
