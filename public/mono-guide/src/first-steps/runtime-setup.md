@@ -11,7 +11,7 @@ void InitMono()
 }
 ```
 If you don't provide this path to Mono you'll see an error message printed in the console, it would look something like this:
-![MSCorlibError](/res/mscorlib-error.jpg)
+![MSCorlibError](../res/mscorlib-error.jpg)
 
 I will say that if you don't provide this path, but you have a **MONO_PATH** environment variable that points to the correct folder Mono will attempt to use that path to located `mscorlib.dll`.
 
