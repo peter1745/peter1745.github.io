@@ -1,0 +1,253 @@
+@charset "UTF-8";
+
+:root {
+  --bs-link-color: #e9e9e9 !important;
+  --bs-link-hover-color: #999 !important;
+  --bs-body-color: #d9d9d9 !important;
+  --bs-body-bg: #141414 !important;
+}
+
+body {
+  overflow-x: hidden !important;
+}
+
+footer {
+  margin-top: 3rem !important;
+}
+
+.navbar {
+  --bs-navbar-brand-color: #dfdfdf !important;
+  --bs-navbar-color: #dfdfdf !important;
+  --bs-navbar-hover-color: #7a7a7a !important;
+  --bs-navbar-disabled-color: #555 !important;
+}
+
+.dropdown-menu {
+  --bs-dropdown-bg: rgba(38, 38, 38, 0.9) !important;
+  --bs-dropdown-link-color: #e9e9e9 !important;
+  --bs-dropdown-link-hover-color: #999 !important;
+  --bs-dropdown-link-hover-bg: var(--bs-dropdown-bg) !important;
+  --bs-dropdown-link-active-bg: var(--bs-dropdown-bg) !important;
+  border: none !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+  backdrop-filter: blur(5px);
+}
+
+.dropdown-menu.show {
+  top: 109% !important;
+  text-transform: uppercase !important;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.0625em;
+}
+
+#mainNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+  background-color: rgba(34, 34, 34, 0.9);
+  backdrop-filter: blur(5px);
+}
+
+#mainNav .navbar-brand {
+  font-weight: 800;
+}
+
+#mainNav .navbar-toggler {
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.75rem;
+  text-transform: uppercase;
+}
+
+#mainNav .navbar-nav > li.nav-item > a.nav-link {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.0625em;
+  text-transform: uppercase;
+}
+
+#mainNav .navbar-nav .nav-icons {
+  display: flex;
+}
+
+#mainNav .navbar-nav .nav-icons a.nav-link {
+  padding-top: 16px !important;
+  padding-bottom: 6px !important;
+  padding-left: 0.25rem !important;
+  padding-right: 0.25rem !important;
+  font-size: 0.8rem;
+}
+
+.mw-25 {
+  max-width: 25% !important;
+}
+
+.mw-50 {
+  max-width: 50% !important;
+}
+
+.mw-75 {
+  max-width: 75% !important;
+}
+
+footer {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+header.masthead {
+  position: relative;
+  margin-bottom: 3rem;
+  padding-top: calc(8rem + 57px);
+  padding-bottom: 8rem;
+  background: no-repeat center center;
+  background-color: #6c757d;
+  background-size: cover;
+  background-attachment: scroll;
+}
+
+header.masthead:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #212529;
+  opacity: 0.5;
+}
+
+header.masthead .page-heading,
+header.masthead .post-heading,
+header.masthead .site-heading {
+  color: #fff;
+}
+
+header.masthead .page-heading,
+header.masthead .site-heading {
+  text-align: center;
+}
+
+header.masthead .page-heading h1, header.masthead .page-heading .h1,
+header.masthead .site-heading h1,
+header.masthead .site-heading .h1 {
+  font-size: 3rem;
+}
+
+header.masthead .page-heading .subheading,
+header.masthead .site-heading .subheading {
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.1;
+  display: block;
+  margin-top: 0.625rem;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+header.masthead .post-heading h1, header.masthead .post-heading .h1 {
+  font-size: 2.25rem;
+}
+
+header.masthead .post-heading .meta,
+header.masthead .post-heading .subheading {
+  line-height: 1.1;
+  display: block;
+}
+
+header.masthead .post-heading .subheading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0.75rem 0 2rem;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+header.masthead .post-heading .meta {
+  font-size: 1.25rem;
+  font-weight: 300;
+  font-style: italic;
+  font-family: "Lora", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+header.masthead .post-heading .meta a {
+  color: #fff;
+}
+
+@media (min-width: 992px) {
+  header.masthead {
+    padding-top: 12.5rem;
+    padding-bottom: 12.5rem;
+  }
+
+  header.masthead .page-heading h1, header.masthead .page-heading .h1,
+  header.masthead .site-heading h1,
+  header.masthead .site-heading .h1 {
+    font-size: 5rem;
+  }
+
+  header.masthead .post-heading h1, header.masthead .post-heading .h1 {
+    font-size: 3.5rem;
+  }
+
+  header.masthead .post-heading .subheading {
+    font-size: 1.875rem;
+  }
+}
+
+.section-heading {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-top: 3.75rem;
+}
+
+.caption {
+  font-size: 0.875rem;
+  font-style: italic;
+  display: block;
+  margin: 0;
+  padding: 0.625rem;
+  text-align: center;
+}
+
+a > span > svg.fa-circle {
+  color: #444;
+}
+
+a:hover > span > svg.fa-circle {
+  color: #999;
+}
+
+.post-preview > a:focus, .post-preview > a:hover {
+  text-decoration: none;
+}
+
+.post-preview > a > .post-title {
+  font-size: 1.875rem;
+  margin-top: 1.875rem;
+  margin-bottom: 0.625rem;
+}
+
+.post-preview > a > .post-subtitle {
+  font-weight: 300;
+  margin-bottom: 0.625rem;
+}
+
+.post-preview > .post-meta {
+  font-size: 1.125rem;
+  font-style: italic;
+  margin-top: 0;
+  color: #6c757d;
+}
+
+.post-preview > .post-meta > a {
+  text-decoration: none;
+}
+
+@media (min-width: 992px) {
+  .post-preview > a > .post-title {
+    font-size: 2.25rem;
+  }
+}

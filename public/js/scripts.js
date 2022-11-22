@@ -1,3 +1,6 @@
+let tooltipTriggerList = [];
+let tooltipList = [];
+
 function ReadTextFile(path, callback)
 {
     let request = new XMLHttpRequest();
@@ -22,11 +25,18 @@ function GetFilesInFolder(path, callback)
     request.send(null);
 }
 
+function InvalidateTooltips()
+{
+    tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltipList = [...tooltipTriggerList].map(tooltipTriggerElement => new bootstrap.Tooltip(tooltipTriggerElement));
+}
+
 window.addEventListener('load', () =>
 {
     ReadTextFile('../includes/navbar.html', (text) =>
     {
         document.body.insertAdjacentHTML('afterbegin', text);
+        InvalidateTooltips();
     });
 
     ReadTextFile('../includes/footer.html', (text) =>
