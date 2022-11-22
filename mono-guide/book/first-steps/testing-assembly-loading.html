@@ -186,7 +186,7 @@
 <p>First we're getting the namespace name by accessing the value stored in the <code>MONO_TYPEDEF_NAMESPACE</code> column, again that value is an <em>index</em> into the string heap, where the name of our namespace is located. If a type doesn't have a namespace, meaning it's in the global namespace, this function will simply return an empty string.</p>
 <p>Next we do almost the exact same thing, except we're getting the value in the <code>MONO_TYPEDEF_NAME</code> column.</p>
 <p>As you can see from the image below there's still a few other columns in the <code>MONO_TABLE_TYPEDEF</code> table, I'm not going to cover them here right now, but I'll make sure to properly cover them at a later date.</p>
-<p><img src="/res/typedef-columns.jpg" alt="TypeDefColumns" /></p>
+<p><img src="../res/typedef-columns.jpg" alt="TypeDefColumns" /></p>
 <p><strong>Alright!</strong> If you now call this function (<em>after</em> you've loaded the assembly) you should see all types stored in your assembly printed to the console.</p>
 <h2 id="the-module-type"><a class="header" href="#the-module-type">The Module Type</a></h2>
 <p>Now you might've noticed that the very first type printed is called <code>&lt;Module&gt;</code>, and you probably realize that there's no type with that name in your project, so what's going on? Well it's actually a type that's provided by the C# compiler, and all C# DLLs and EXEs have this type.</p>

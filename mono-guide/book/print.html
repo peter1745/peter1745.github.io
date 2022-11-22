@@ -306,7 +306,7 @@ I may end up covering the other folders at a later date, but I have only recentl
 }
 </code></pre>
 <p>If you don't provide this path to Mono you'll see an error message printed in the console, it would look something like this:
-<img src="first-steps//res/mscorlib-error.jpg" alt="MSCorlibError" /></p>
+<img src="first-steps/../res/mscorlib-error.jpg" alt="MSCorlibError" /></p>
 <p>I will say that if you don't provide this path, but you have a <strong>MONO_PATH</strong> environment variable that points to the correct folder Mono will attempt to use that path to located <code>mscorlib.dll</code>.</p>
 <p>Once we've told Mono where it can locate mscorlib we can actually start the runtime. We have to call <code>mono_jit_init</code> in order to start the runtime, but you may notice that there's actually another function with a similiar name: <code>mono_jit_init_version</code>, so what's the difference?
 Well the difference has to do with what version of the runtime we use. By using the first function (<code>mono_jit_init</code>) we're telling Mono to use the runtime version referenced by the <em>first</em> assembly that we load, meaning it will automatically detect it. If we use the second function <code>mono_jit_init_version</code> we can specify the <em>exact</em> version of the runtime we want.</p>
@@ -356,7 +356,7 @@ Well the difference has to do with what version of the runtime we use. By using 
 <div style="break-before: page; page-break-before: always;"></div><h1 id="loading-assemblies"><a class="header" href="#loading-assemblies">Loading Assemblies</a></h1>
 <p>In this section we'll cover how you can load a C# assmebly using Mono. First of all you should know that an assembly in C# (and in .NET in general) can be <em>either</em> a DLL or an EXE file. Now before we start writing the loading code we have to have an assembly to load.</p>
 <p>In this example we'll be building our C# project as a Dynamic Link Library, or DLL, Visual Studio calls the project type for DLLs &quot;Class Library&quot; so make sure your C# project has the &quot;Output Type&quot; set to &quot;Class Library&quot;, as shown in the image below:</p>
-<p><img src="first-steps//res/vs-project-type.jpg" alt="VisualStudioProjectType" /></p>
+<p><img src="first-steps/../res/vs-project-type.jpg" alt="VisualStudioProjectType" /></p>
 <h2 id="c-code"><a class="header" href="#c-code">C# Code</a></h2>
 <p>In the beginning we'll simply write some basic C# code that will allow us to make sure our code actually works. To start I'll create a C# class called &quot;CSharpTester&quot;, and we'll add some basic data and methods to it.</p>
 <pre><code class="language-cs">using System;
@@ -488,7 +488,7 @@ public class CSharpTesting
 <p>First we're getting the namespace name by accessing the value stored in the <code>MONO_TYPEDEF_NAMESPACE</code> column, again that value is an <em>index</em> into the string heap, where the name of our namespace is located. If a type doesn't have a namespace, meaning it's in the global namespace, this function will simply return an empty string.</p>
 <p>Next we do almost the exact same thing, except we're getting the value in the <code>MONO_TYPEDEF_NAME</code> column.</p>
 <p>As you can see from the image below there's still a few other columns in the <code>MONO_TABLE_TYPEDEF</code> table, I'm not going to cover them here right now, but I'll make sure to properly cover them at a later date.</p>
-<p><img src="first-steps//res/typedef-columns.jpg" alt="TypeDefColumns" /></p>
+<p><img src="first-steps/../res/typedef-columns.jpg" alt="TypeDefColumns" /></p>
 <p><strong>Alright!</strong> If you now call this function (<em>after</em> you've loaded the assembly) you should see all types stored in your assembly printed to the console.</p>
 <h2 id="the-module-type"><a class="header" href="#the-module-type">The Module Type</a></h2>
 <p>Now you might've noticed that the very first type printed is called <code>&lt;Module&gt;</code>, and you probably realize that there's no type with that name in your project, so what's going on? Well it's actually a type that's provided by the C# compiler, and all C# DLLs and EXEs have this type.</p>

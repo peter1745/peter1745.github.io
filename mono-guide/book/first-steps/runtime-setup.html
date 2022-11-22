@@ -156,7 +156,7 @@
 }
 </code></pre>
 <p>If you don't provide this path to Mono you'll see an error message printed in the console, it would look something like this:
-<img src="/res/mscorlib-error.jpg" alt="MSCorlibError" /></p>
+<img src="../res/mscorlib-error.jpg" alt="MSCorlibError" /></p>
 <p>I will say that if you don't provide this path, but you have a <strong>MONO_PATH</strong> environment variable that points to the correct folder Mono will attempt to use that path to located <code>mscorlib.dll</code>.</p>
 <p>Once we've told Mono where it can locate mscorlib we can actually start the runtime. We have to call <code>mono_jit_init</code> in order to start the runtime, but you may notice that there's actually another function with a similiar name: <code>mono_jit_init_version</code>, so what's the difference?
 Well the difference has to do with what version of the runtime we use. By using the first function (<code>mono_jit_init</code>) we're telling Mono to use the runtime version referenced by the <em>first</em> assembly that we load, meaning it will automatically detect it. If we use the second function <code>mono_jit_init_version</code> we can specify the <em>exact</em> version of the runtime we want.</p>
