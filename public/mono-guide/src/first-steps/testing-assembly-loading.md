@@ -57,7 +57,7 @@ Next we do almost the exact same thing, except we're getting the value in the `M
 
 As you can see from the image below there's still a few other columns in the `MONO_TABLE_TYPEDEF` table, I'm not going to cover them here right now, but I'll make sure to properly cover them at a later date.
 
-![TypeDefColumns](/res/typedef-columns.jpg)
+![TypeDefColumns](../res/typedef-columns.jpg)
 
 **Alright!** If you now call this function (*after* you've loaded the assembly) you should see all types stored in your assembly printed to the console.
 

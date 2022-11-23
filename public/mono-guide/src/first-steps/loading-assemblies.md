@@ -4,7 +4,7 @@ In this section we'll cover how you can load a C# assmebly using Mono. First of 
 
 In this example we'll be building our C# project as a Dynamic Link Library, or DLL, Visual Studio calls the project type for DLLs "Class Library" so make sure your C# project has the "Output Type" set to "Class Library", as shown in the image below:
 
-![VisualStudioProjectType](/res/vs-project-type.jpg)
+![VisualStudioProjectType](../res/vs-project-type.jpg)
 
 ## C# Code
 In the beginning we'll simply write some basic C# code that will allow us to make sure our code actually works. To start I'll create a C# class called "CSharpTester", and we'll add some basic data and methods to it.
