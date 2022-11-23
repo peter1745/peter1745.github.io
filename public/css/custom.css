@@ -1,46 +1,52 @@
 @charset "UTF-8";
 
 :root {
-  --bs-link-color: #e9e9e9 !important;
-  --bs-link-hover-color: #999 !important;
-  --bs-body-color: #d9d9d9 !important;
-  --bs-body-bg: #141414 !important;
+  --bs-link-color: #71cbff;
+  --bs-link-hover-color: #999;
+  --bs-body-color: #d9d9d9;
+  --bs-body-bg: #141414;
 }
 
 body {
-  overflow-x: hidden !important;
+  overflow-x: hidden;
 }
 
-footer {
-  margin-top: 3rem !important;
+footer#main-footer {
+  margin-top: 3rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
 .navbar {
-  --bs-navbar-brand-color: #dfdfdf !important;
-  --bs-navbar-brand-hover-color: #7a7a7a !important;
-  --bs-navbar-color: #dfdfdf !important;
-  --bs-navbar-hover-color: #7a7a7a !important;
-  --bs-navbar-disabled-color: #555 !important;
+  --bs-navbar-brand-color: #dfdfdf;
+  --bs-navbar-brand-hover-color: #7a7a7a;
+  --bs-navbar-color: #dfdfdf;
+  --bs-navbar-hover-color: #7a7a7a;
+  --bs-navbar-disabled-color: #555;
 }
 
 .dropdown-menu {
-  --bs-dropdown-bg: rgba(38, 38, 38, 0.9) !important;
-  --bs-dropdown-link-color: #e9e9e9 !important;
-  --bs-dropdown-link-hover-color: #999 !important;
-  --bs-dropdown-link-hover-bg: var(--bs-dropdown-bg) !important;
-  --bs-dropdown-link-active-bg: var(--bs-dropdown-bg) !important;
-  border: none !important;
-  border-top-left-radius: 0px !important;
-  border-top-right-radius: 0px !important;
+  --bs-dropdown-bg: rgba(38, 38, 38, 0.9);
+  --bs-dropdown-link-color: #e9e9e9;
+  --bs-dropdown-link-hover-color: #999;
+  --bs-dropdown-link-hover-bg: var(--bs-dropdown-bg);
+  --bs-dropdown-link-active-bg: var(--bs-dropdown-bg);
+  border: none;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
   backdrop-filter: blur(5px);
 }
 
 .dropdown-menu.show {
-  top: 109% !important;
-  text-transform: uppercase !important;
+  top: 109%;
+  text-transform: uppercase;
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.0625em;
+}
+
+.card {
+  --bs-card-bg: #1a1a1a;
 }
 
 #mainNav {
@@ -80,24 +86,19 @@ footer {
   padding-bottom: 6px !important;
   padding-left: 0.25rem !important;
   padding-right: 0.25rem !important;
-  font-size: 0.8rem;
+  font-size: 0.8rem !important;
 }
 
 .mw-25 {
-  max-width: 25% !important;
+  max-width: 25%;
 }
 
 .mw-50 {
-  max-width: 50% !important;
+  max-width: 50%;
 }
 
 .mw-75 {
-  max-width: 75% !important;
-}
-
-footer {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+  max-width: 75%;
 }
 
 header.masthead {
@@ -221,34 +222,12 @@ a:hover > span > svg.fa-circle {
   color: #999;
 }
 
-.post-preview > a:focus, .post-preview > a:hover {
-  text-decoration: none;
+.post-preview:hover {
+  box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.01);
+  cursor: pointer;
 }
 
-.post-preview > a > .post-title {
-  font-size: 1.875rem;
-  margin-top: 1.875rem;
-  margin-bottom: 0.625rem;
-}
-
-.post-preview > a > .post-subtitle {
-  font-weight: 300;
-  margin-bottom: 0.625rem;
-}
-
-.post-preview > .post-meta {
-  font-size: 1.125rem;
-  font-style: italic;
-  margin-top: 0;
-  color: #6c757d;
-}
-
-.post-preview > .post-meta > a {
-  text-decoration: none;
-}
-
-@media (min-width: 992px) {
-  .post-preview > a > .post-title {
-    font-size: 2.25rem;
-  }
+#content-padding {
+  width: 100%;
+  margin-top: 6rem !important;
 }
