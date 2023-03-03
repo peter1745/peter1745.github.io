@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VEF95VMWRV"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-VEF95VMWRV');
+  </script>
+
+  <meta name="google-site-verification" content="GHtcAbhiAVSdB8_i-AGUwIT4YGp6wzJPFAHVOQh0Qo4" />
+
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Peter Nilsson - My Journey with Physics</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <link href="/assets/css/style.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --bs-body-bg: #0c0c0c;
+    }
+
+    .article {
+      border-bottom: 2px solid rgb(206, 206, 206);
+      padding-bottom: 2rem;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Mobile nav toggle button -->
+  <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+
+  <header id="header">
+    <div class="d-flex flex-column">
+
+      <div class="profile">
+        <img src="/assets/img/profile-img.jpg" alt="" class="img-fluid rounded-circle">
+        <h1 class="text-light"><a href="index.html">Peter Nilsson</a></h1>
+        <div class="social-links mt-3 text-center">
+          <a href="https://twitter.com/peter1745_" target="_blank" class="twitter"><i class="bx bxl-twitter"></i></a>
+          <a href="https://github.com/peter1745" target="_blank" class="github"><i class="bx bxl-github"></i></a>
+        </div>
+      </div>
+
+      <nav id="navbar" class="nav-menu navbar">
+        <ul>
+          <li><a href="/" class="nav-link"><i class="bx bx-home"></i> <span>Home</span></a></li>
+          <li><a href="/about" class="nav-link"><i class="bx bx-user"></i> <span>About</span></a></li>
+          <li><a href="/projects" class="nav-link"><i class="bx bx-briefcase"></i> <span>Projects</span></a></li>
+          <li><a href="/mono-guide/" class="nav-link"><i class="bx bx-file-blank"></i> <span>Mono Guide</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section id="posts" class="posts">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>My Journey with Physics</h2>
+        </div>
+
+        <div class="d-flex justify-content-between" style="color: #bbb">
+          <h3>Jolt vs. PhysX (In my opinion)</h3>
+          <div>
+            <i class="bx bx-calendar"></i> <span>Posted on January 17th, 2023</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 pt-4 pt-lg-0 content article" data-aos="fade-left">
+            <p>
+              Physics is important. Both in real life and in games.
+              Physics is also interesting, both in real life and in games.
+              <br>
+              Anyone who knows me is probably aware that one of my jobs at Studio Cherno is developing the physics engine in Hazel.
+              <br>
+              <br>
+              In fact that was how I first started working on Hazel, and how I got to know Yan. On September 11th, 2020 I made my first commit to the proper Hazel repository.
+              <br>
+              And that was the first commit that introduced 3D physics in the engine, because I had been put in charge of integrating the <a href="https://en.wikipedia.org/wiki/PhysX" target="_blank">PhysX</a> library with the rest of the engine.
+              <br>
+              I don't know the <i>exact</i> date that I started working on that PhysX implementation because I was working of a fork of the engine, and that fork sadly doesn't exist anymore.<br><br>The start of this post will be a semi-short overview of my thoughts on the physics system in Hazel, and how it has evolved, from the initial implementation, all the way to the current rewrite that I'm working on.<br>I'll talk about Jolt later on in the post, so if that's what you're interested in just skip the first half of this post.<br><br><h2> The Initial Implementation</h2>While I'd say I'm quite comfortable programming in C++ nowadays that definitely wasn't the case back when I first started working on Hazel.<br>I had no real experience with C++ at that time, my only real experience was working in Java and C#, and as a result my initial implementation wasn't great, but it worked (for the most part).<br><br>If you're interested in seeing what the physics system looked like back then you can check out this video that Yan made showcasing it: <a href="https://www.youtube.com/watch?v=oqTAHwwSA9I" target="_blank">3D Physics! // Hazel Engine Dev Log</a><br><br>But to cut this part short: it was terrible, the actual C++ code was terrible, 90% of the physics engine was in a single, convoluted, messy file. And the way that I actually <i>used</i> the PhysX API wasn't great either. Honestly I'm still amazed and surprised by the fact that Yan allowed me to continue working on Hazel after that initial implementation. And I still can't believe that he hired me to work professionally on Hazel.<br><br>Over the next couple of months I worked to improve the design and functionality of the physics engine, and over time it got better, and so did my ability to write decent code.<br><br>The initial implementation stayed in the engine for a lot longer than it should've, but eventually I went on to completely rewrite the system from the ground up.
+              <br>
+              <br>
+              <h2>The Next Version</h2>After working on the initial implementation of the physics engine I went on to work on some other systems in Hazel, including the Asset system and the Scripting Engine (<i>I'll make a separate post talking about the Scripting Engine later on...</i>).<br><br>The first major rewrite of the physics engine was merged to master on the 3rd of July, 2021, and it improved many things both in terms of API design and functionality.<br><br>The biggest change was that I broke up the gigantic wrapper around PhysX into multiple smaller files. I also went on to improve the performance of the overall system.<br><br>I think that the quality of my code improved significantly during the rewrite, and my understanding of game physics improved drastically as well. During my initial implementation I had a really weak understanding of how physics in games worked, best practices, etc...<br><br>I think the most important lesson I learned with this rewrite was that I needed to take my time when designing the API of a system. My philosophy was, and still <i>is</i> to some degree that you should first get the most basic version of the system up and running, even if the result is a buggy and badly written API.<br>But after the rewrite, while my philosophy was pretty much the same, I realized that I should still pay attention to the overall design and code quality of the system, that way you won't have to completely rewrite the entire system when you come back to improve upon it.<br>I still believe that getting a minimum viable product (MVP) up and running before trying to make it good, and optimized is the way to go for the most part. But nowadays I try my best to maintain good code quality and API design while getting the basics up and running.<br><br>After I had finished the rewrite of the physics engine I moved on to take charge of, and rewriting, the scripting engine in Hazel. <i>This is something I regret somewhat today, since it meant getting up close and personal with the Mono library...</i><br><br>It would be quite some time before I'd do the next major rewrite of the physics engine.<br><br><h2> Introducing Jolt</h2>And that brings us up to the current rewrite of the physics engine. The biggest change with this rewrite is that we're now working on integrating a completely different physics library into Hazel, <a href="https://github.com/jrouwe/JoltPhysics" target="_blank">Jolt</a>.<br><br><h3> The Premise</h3>Before I talk about the current rewrite I think it's important to understand how I found out about Jolt, and why we decided to implement it into Hazel.<br><br>I'd heard about Jolt quite a while before I decided to give it a go, some people on Yan's Discord server had talked about it a few months before I started testing it, but I didn't really think much of it at the time, mainly because I was a bit burned out from working with PhysX.<br><br>But on July 16th, 2022 I decided to check it out, and I was impressed with what I saw. And so I decided to try it out.<br>Initially I was planing on only working on the Jolt integration during the weekends (I was employed by Studio Cherno at this point, so I didn't want to waste Yan's money), and after talking to Yan about it he was on board with giving it a go.<br><br>Jolt also had certain benefits over PhysX that made me really excited about trying it, for an example Jolt is licensed under the MIT license, so it's completely open.<br>It's being actively developed in an open source manner, whereas the PhysX repository wasn't actively updated anymore, mainly because of PhysX 5, which didn't have a standalone SDK available at the time, you had to use Nvidia Omniverse if you wanted access to it.<br><br>Jolt had also been used by Guerrilla Games when they made Horizon: Forbidden West, which is a great game by the way.<br><br>Jolt is a newer library compared to PhysX, Jolt most likely started development sometime in 2018 (I could be wrong on this), whereas PhysX started it's journey back in 2001 (although it wasn't PhysX back then, but a physics engine called NovodeX).<br>Either way Nvidia had been developing PhysX since 2008, and the API isn't written in a more modern way.<br><br>Jolt on the other hand was developed from the ground with multi-threading, and multi-core processors in mind, and the API is written using modern C++.<br><br>Now, that's all well and good, but in the end what actually <i>matters</i> is the performance. There's no point in using Jolt over PhysX if the latter is going to give us the best performance.<br>So I decided to get a basic implementation of Jolt going side-by-side with PhysX so I could do some profiling.<br><br><h3> The Initial Tests</h3>Immediately after diving deeper into the Jolt API I fell in love with it, it was much better written than the PhysX API in my opinion, it required me to be more explicit about what I wanted from it, to the point where I like to compare Jolt vs. PhysX to OpenGL vs. Vulkan in terms of API design.<br><br>If you want to take a look at my initial profiling result you can find the spreadsheet and graphs here: <a href="https://docs.google.com/spreadsheets/d/1zWKqf1QUaAhvQ1aRJBPezp6-FPF9rpJEC8hFFbIM7HY/edit?usp=share_link" target="_blank">Initial Profiling Sheet</a><br>And if you want to see my presentation that I made after spending some time with the two APIs you can find the slideshow here: <a href="https://docs.google.com/presentation/d/1Q4SdunI7zmY4R0wMbk9MxrYNO_XvBxOhfcE3afnrx0Y/edit?usp=share_link" target="_blank">Slideshow</a><br><br>I will say that the accuracy of the profiling results is questionable nowadays, but I have found that Jolt is generally capable of getting better performance overall, so the results aren't completely incorrect, but they might not reflect the true difference between the APIs anymore, especially considering that PhysX 5 is now available separately from the Omniverse SDK.<br><br>Regardless, the tests I performed convinced me that Jolt was worth integrating. This doesn't necessarily mean that we'll get rid of PhysX though, I would like to upgrade the version of PhysX that Hazel uses from PhysX 4.1 to PhysX 5.1, but that's for a later day.<br><br>But that brings us to the actual physics engine rewrite, and my comparison of Jolt vs. PhysX 4.1.<br><br><h2> The Current Rewrite</h2>The first commit of the current rewrite was made on the 17th of July, 2022, and this time I had to account for <b>two</b> physics libraries instead of just one.<br><br>This is by far the most well written system I've written in Hazel to date. It's culmination of my entire journey with C++ and game related physics systems so far.<br>Now it definitely could be improved upon even more, but compared to all my previous work in Hazel it's the work I'm the most proud of.<br><br>I took a lot of inspiration from Jolt when I was designing the new API, which means that PhysX might be <i>slightly</i> less optimally implemented, but not in any way that actually affects the performance noticeably.<br>I simply prefer the way that Jolt is architectured.<br><br>I had a few goals in mind that I wanted to achieve with the current rewrite:<br><ol><li> Build a scalable physics API for Hazel that could support multiple internal APIs</li><li> Fix some of the weirder aspects of the old system, such as the C# API integration</li><li> Integrate physics profiling more closely with the engine (resulted in the new "Captures" system)</li><li> Optimize the simulation performance as much as possible</li><li> Build a base that can be expanded on at a later date, this is important for supporting joints and ragdolls</li></ol><br>At this stage in the rewrite I feel that I have achieved most of these goals, at least to a small degree. It'll still be quite some time before we can get ragdolls implemented in Hazel, but at least now we have a good base to build that system on top off.<br><br>That brings me to the end of this post: my comparison of PhysX vs. Jolt, my thoughts on the two APIs, and why I prefer Jolt.
+              <br>
+              <br>
+              <h2> PhysX vs. Jolt (And why I prefer Jolt)</h2>
+              Alright, we've made it to the final part of this post. The Comparison.<br><br>I'll list the things I think Jolt does better, and then the things I think PhysX does better. Keep in mind that these are my <i>opinions</i>, this comparison isn't meant to determine which API is objectively better, that's impossible to do.<br><br><h3> Things Jolt Does Better</h3><ul><li>Upfront about allocations. Jolt expects that you tell it how much memory will be needed for the simulation, which definitely results in better performance since Jolt won't be reallocating a lot of memory during the simulation. (Jolt does provide a way of doing allocations dynamically, so upfront allocations isn't a requirement)</li><li>Better multi-core support. Out of the box Jolt will utilize multiple cores very well, whereas I've found that PhysX doesn't utilize multiple cores all too well. Jolt was designed with this in mind whereas PhysX wasn't.</li><li>Explicitly reference counted objects. When you create a new object in Jolt you'll most likely get a "Ref" instance back. PhysX does utilize reference counting, but it's not as apparent as it is with Jolt because PhysX returns pointers to most objects.</li><li>Multiple collision shapes per body. Jolt handles this by providing a "compound" shape, which you construct from multiple other shapes, whereas PhysX just lets you add an arbitrary amount of shapes individually to any body. I'm not entirely sure how PhysX handles this internally, but I <i>do</i> know that Jolt computes these shapes into a single more optimal collision shape, meaning that collision tests are most likely more optimal.</li><li>Better Multi-Threaded access. Jolt was designed with this in mind, and most methods in Jolt supports being accessed by multiple threads at once, whereas PhysX requires you to make use of a "Task" system, which is poorly designed in my opinion.</li><li>Jolt achieves a higher simulation fidelity / better simulation quality out of the box. Jolt gives us some really good simulation values out of the box, whereas PhysX requires us to play around with a lot of parameters in order to get a high quality simulation.</li></ul><br><h3> Things PhysX Does Better</h3><ul><li>PhysX has better simulation performance out of the box, whereas Jolt requires more careful setup and usage of the API in order to achieve good performance. Jolt does however gives more opportunities for optimizations, and can achieve better performance overall, but it does require more work</li><li>PhysX supports GPU-based simulation by utilizing the CUDA architecture, sadly this is limited to Nvidia GPUs only</li><li>The PhysX Visual Debugger (PVD) supports recording the simulation over the network, Jolt requires us to record the simulation to a file</li><li>The PVD doesn't just visually record our simulation, but also records the parameters of the simulation at any given moment, allowing us to inspect the parameters more easily. Jolt on the other hand only records the simulation visually.</li><li>PhysX offers us more control over mesh collider cooking, giving us more parameters to mess around with</li><li>PhysX has far better documentation overall, since it's an older and more widely used API there's more resources on it online, whereas Jolt lacks online documentation. The developer of Jolt is very active on the GitHub repository though, and has been very helpful with any issues I've encountered, or any questions I've had about the usage. This isn't the case with the PhysX developers.</li><li>Achieves better performance when adding a lot of new bodies <i>during</i> the simulation. Jolt requires us to manually optimize the broadphase structure, and doing that when there's already a lot of bodies in the broadphase can result in slowdowns temporarily.</li></ul><br>Alright, those are my thoughts on which API does certain things in a better way than the other. Now, <i>why</i> do I prefer Jolt over PhysX? Isn't PhysX a more mature API? Well, yes, it is. But that doesn't matter too much to me.<br><br>There's a few reasons why I prefer Jolt:<br><ul><li>More modern API, utilizing more modern versions of C++</li><li>More well written, and less confusing API</li><li>The developer of Jolt is more invested in communicating with the people using Jolt, whereas interactions with the PhysX developers feels more corporate (which is understandable)</li><li>Jolt requires us to be more explicit about what we want, which in turn makes more obvious what's going on internally</li><li>Jolts development is heavily influenced by the needs of Guerilla Games, seeing as it's the physics library that they use for the games (starting with Horizon: Forbidden West), whereas PhysX isn't really influenced by games that much anymore. Especially considering that PhysX is used for a lot of non-video game areas, they've recently started focusing more on simulations for VFX, which means it ends up getting bloated with features that aren't needed, or useful for video games.</li></ul><br>These are the main reasons why I prefer Jolt over PhysX, there are many more reasons but I won't bother listing all of them here (<i>we'd be here a while</i>). I want to make it clear that all of the things I've talked about are my own personal opinions, and aren't meant to sway you in any particular direction.<br>If you're considering messing around with physics <i>please</i> do some research on your own to determine which library suits your needs the best.<br><br>I know that I kind of rambled on a lot in this post, but these are my thoughts and opinions so I just sort of dumped them out. That'll be a recurring theme for my blog posts going forward as well.<br><br>Anyways I'm going to sign off here, I may talk more about physics in the future, so if that's something you're interested in feel free to keep an eye out! I'd like to talk about the scripting engine in Hazel soon, and why I partially regret taking the task of developing and maintaining it, so keep an eye out for that.
+              <br>
+              <br>
+              Anyway, thanks for reading my very rambly post!
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer">
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>Peter Nilsson</span></strong>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="/assets/vendor/aos/aos.js"></script>
+  <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/assets/vendor/typed.js/typed.min.js"></script>
+  <script src="/assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="/assets/vendor/php-email-form/validate.js"></script>
+
+  <script src="/assets/js/main.js"></script>
+
+</body>
+
+</html>

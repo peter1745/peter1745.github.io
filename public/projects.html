@@ -16,7 +16,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Peter Nilsson - Home</title>
+  <title>Peter Nilsson - Projects</title>
   <meta content="I'm a Software Engineer from Sweden, and this is my blog where I talk about anything that comes to mind." name="description">
   <meta content="Peter,Nilsson,C++,C#,Programming,Software,Blog" name="keywords">
 
@@ -65,21 +65,14 @@
 
       <nav id="navbar" class="nav-menu navbar">
         <ul>
-          <li><a href="/" class="nav-link active"><i class="bx bx-home"></i> <span>Home</span></a></li>
+          <li><a href="/" class="nav-link"><i class="bx bx-home"></i> <span>Home</span></a></li>
           <li><a href="/about" class="nav-link"><i class="bx bx-user"></i> <span>About</span></a></li>
-          <li><a href="/projects" class="nav-link"><i class="bx bx-briefcase"></i> <span>Projects</span></a></li>
+          <li><a href="/projects" class="nav-link active"><i class="bx bx-briefcase"></i> <span>Projects</span></a></li>
           <li><a href="/mono-guide/" class="nav-link"><i class="bx bx-file-blank"></i> <span>Mono Guide</span></a></li>
         </ul>
       </nav>
     </div>
   </header>
-
-  <section id="hero" class="d-flex flex-column justify-content-center align-items-center">
-    <div class="hero-container" data-aos="fade-in">
-      <h1>Peter Nilsson</h1>
-      <p>I'm a <span class="typed" data-typed-items="Developer, Coffee Lover, Live Streamer"></span></p>
-    </div>
-  </section>
 
   <main id="main">
 
@@ -87,52 +80,57 @@
       <div class="container">
 
         <div class="section-title">
-          <h2>Posts</h2>
+          <h2>Projects</h2>
         </div>
 
         <div class="row">
           <div class="col-lg-12 pt-4 pt-lg-0 content article" data-aos="fade-left">
-            <h2><a href="/posts/my-journey-with-physics">My Journey with Physics</a></h2>
+            <h2><a href="https://github.com/peter1745/Fission" target="_blank"><i style="font-size: 1.75rem;" class="bx bx-link-alt"></i> Fission</a></h2>
             <div style="color: #bbb">
-              <i class="bx bx-calendar"></i> <span>Posted on January 17th, 2023</span>
+              <i>November 18th, 2022</i>
             </div>
             <p>
-              Physics is important. Both in real life and in games. Physics is also interesting, both in real life and in games.<br>Anyone who knows me is probably aware that one of my jobs at Studio Cherno is developing the physics engine in Hazel.<br><br>In fact that was how I first started working on Hazel, and how I got to know Yan. On September 11th, 2020 I made my first commit to the proper Hazel repository.<br>And that was the first commit that introduced 3D physics in the engine, because I had been put in charge of integrating the <a href="https://en.wikipedia.org/wiki/PhysX" target="_blank">PhysX</a> library with the rest of the engine.
+              Fission is a physics engine that I'm currently working on. It was initially designed for my game engine "Fusion", but has since become
+              a standalone project.
+              <br>
+              I started working on Fission because of my facination with game physics, and because I've used both the PhysX and Jolt physics libraries previously.
+              Initially I was following the <a href="https://gamephysicsweekend.github.io" target="_blank">Game Physics In One Weekend</a> book series
+              but I've since moved away from following those books (I disagree with parts of them, and the overall approach that the author had).
+              <br>
+              <br>
+              Currently Fission is very simple, but the GitHub repo does contain some "demos" that you can run if you're interested.
             </p>
-            <a href="/posts/my-journey-with-physics">Read More</a>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-12 pt-4 pt-lg-0 content article" data-aos="fade-right">
-            <h2><a href="/posts/its-been-a-while">It's been a while...</a></h2>
-            <div style="color: #bbb">
-              <i class="bx bx-calendar"></i> <span>Posted on January 14th, 2022</span>
-            </div>
-            <p>
-              So it's been quite a while since I made my first post, in fact it's now a new year.
-              So I figured I'd make a post talking about what's been going on since the start of December.
-              <br />
-              <br />
-              <h3>Why has it been so long?</h3>
-              So the biggest reason I haven't posted anything here since the end of November, and the reason why the blog has been offline every now and then is simply because of the energy crisis.
-              <br />
-              At the start of December my electricity price went from 0.4 SEK/kWh to 5 SEK/kWh. Now I know that for some people that's still cheap, and it's not super expensive considering what people in the south of Sweden pay, but considering where I live and what I earn from work per month I couldn't justify running the web server 24/7.
-            </p>
-            <a href="/posts/its-been-a-while">Read More</a>
           </div>
         </div>
 
         <div class="row">
           <div class="col-lg-12 pt-4 pt-lg-0 content article" data-aos="fade-left">
-            <h2><a href="/posts/welcome-to-my-website">Welcome to my Website!</a></h2>
+            <h2><a href="https://github.com/peter1745/Fusion" target="_blank"><i style="font-size: 1.75rem;" class="bx bx-link-alt"></i> Fusion</a></h2>
             <div style="color: #bbb">
-              <i class="bx bx-calendar"></i> <span>Posted on November 28th, 2022</span>
+              <i>August 13th, 2022</i>
             </div>
             <p>
-              Welcome to my website! Here I'll most likely dump whatever random thoughts pop into my head <i>(assuming it's related to programming)</i>.<br>I'll also be posting information about my projects under the "Projects" tab, so keep an eye on that tab!<br><br><i>FYI: Prepare from some severe ramblings. I was tired when I wrote this, in fact I haven't slept for over 24 hours as of me writing this scentence.</i>
+              Fusion is a game engine that I'm developing during my spare time for the sake of learning more about areas that I'm not familiar with, such as rendering, audio, etc...
+              <br>
+              It currently supports Windows, and in <i>theory</i> Linux (it's been a while since I've tested it on Linux), but it's not really something I expect people to use.
             </p>
-            <a href="/posts/welcome-to-my-website">Read More</a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 pt-4 pt-lg-0 content article" data-aos="fade-left">
+            <h2><a href="https://hazelengine.com/" target="_blank"><i style="font-size: 1.75rem;" class="bx bx-link-alt"></i> Hazel</a></h2>
+            <div style="color: #bbb">
+              <i>September 11th, 2020</i>
+            </div>
+            <p>
+              Hazel is a game engine that was initially developed solo by <a href="https://www.youtube.com/@TheCherno" target="_blank">The Cherno (Yan Chernikov)</a> for the purpose of teaching others how you can make game engines.
+              I joined the project on September 11th, 2020 as a volunteer because I wanted to attempt to implement 3D physics, using the PhysX library, and thankfully Yan allowed me to do so.
+              <br>
+              Eventually I'd go on to work on Hazel C# scripting engine as well as some miscellaneous parts of the engine, but I've always prefered working on the physics side of things.
+              <br>
+              I was later hired by Yan to work on Hazel professionally.
+            </p>
           </div>
         </div>
 
