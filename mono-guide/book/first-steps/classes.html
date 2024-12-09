@@ -90,7 +90,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="../introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="../introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="../first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="../first-steps/testing-assembly-loading.html"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="../first-steps/classes.html" class="active"><strong aria-hidden="true">2.3.</strong> Classes</a></li><li class="chapter-item expanded "><a href="../first-steps/methods.html"><strong aria-hidden="true">2.4.</strong> Methods</a></li><li class="chapter-item expanded "><a href="../first-steps/fields.html"><strong aria-hidden="true">2.5.</strong> Fields and Properties</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="first-steps/testing-assembly-loading.html"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="first-steps/classes.html"><strong aria-hidden="true">2.3.</strong> Classes</a></li><li class="chapter-item expanded "><a href="first-steps/methods.html"><strong aria-hidden="true">2.4.</strong> Methods</a></li><li class="chapter-item expanded "><a href="first-steps/fields.html"><strong aria-hidden="true">2.5.</strong> Fields and Properties</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -98,7 +98,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -174,13 +174,13 @@
 
 // ...
 
-MonoClass* testingClass = GetClassInAssembly(appAssembly, &quot;&quot;, &quot;CSharpTesting&quot;);
+MonoClass* testingClass = GetClassInAssembly(appAssembly, "", "CSharpTesting");
 
 </code></pre>
 <h2 id="creating-an-instance-from-our-class"><a class="header" href="#creating-an-instance-from-our-class">Creating an instance from our class</a></h2>
 <p>Once we have our class we have to actually instantiate it. Instantiating a class involves two steps, first we have to allocate the object, then we have to call the correct constructor. Let's start by taking a look at the code, there are however some things we have to keep in mind with constructors that I'll cover at a later date.</p>
 <pre><code class="language-cpp">// Get a reference to the class we want to instantiate
-MonoClass* testingClass = GetClassInAssembly(appAssembly, &quot;&quot;, &quot;CSharpTesting&quot;);
+MonoClass* testingClass = GetClassInAssembly(appAssembly, "", "CSharpTesting");
 
 // Allocate an instance of our class
 MonoObject* classInstance = mono_object_new(s_AppDomain, testingClass);

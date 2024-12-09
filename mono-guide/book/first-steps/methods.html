@@ -90,7 +90,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="../introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="../introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="../first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="../first-steps/testing-assembly-loading.html"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="../first-steps/classes.html"><strong aria-hidden="true">2.3.</strong> Classes</a></li><li class="chapter-item expanded "><a href="../first-steps/methods.html" class="active"><strong aria-hidden="true">2.4.</strong> Methods</a></li><li class="chapter-item expanded "><a href="../first-steps/fields.html"><strong aria-hidden="true">2.5.</strong> Fields and Properties</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="first-steps/testing-assembly-loading.html"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="first-steps/classes.html"><strong aria-hidden="true">2.3.</strong> Classes</a></li><li class="chapter-item expanded "><a href="first-steps/methods.html"><strong aria-hidden="true">2.4.</strong> Methods</a></li><li class="chapter-item expanded "><a href="first-steps/fields.html"><strong aria-hidden="true">2.5.</strong> Fields and Properties</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -98,7 +98,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -159,8 +159,8 @@
 <h2 id="mono_runtime_invoke-vs-unmanaged-method-thunks"><a class="header" href="#mono_runtime_invoke-vs-unmanaged-method-thunks"><code>mono_runtime_invoke</code> vs. Unmanaged Method Thunks</a></h2>
 <p>So, what's the difference? Well the difference is mainly in <em>how</em> Mono actually ends up calling the method in question, and also <em>what</em> parameters you can pass in.
 Using <code>mono_runtime_invoke</code> is slower compared to Unmanaged Method Thunks, but it's also <em>safe</em> and more flexible. <code>mono_runtime_invoke</code> can invoke <em>any</em> method with <em>any</em> parameters, and from what I understand <code>mono_runtime_invoke</code> also does a lot more error checking and validation on the object you pass, as well as the parameters.</p>
-<p>Unmanaged Method Thunks are <em>technically</em> called &quot;Unmanaged to Managed Thunks&quot;, but I call them &quot;Unmanaged Method Thunks&quot; because I accidentially misread the name once. Unmanaged Method Thunks is a concept added in version 2 of Mono, and they allow you to call C# methods with far less overhead compared to <code>mono_runtime_invoke</code>, this means that if you're calling a C# method many times a second, so maybe you have an <code>OnUpdate</code> method in C# that you're calling 60 - 144 times per second, you'd want to create an Unmanaged to Managed Thunk.</p>
-<p>Effectivley Unmanaged to Managed Thunks create a custom invokation method (e.g a custom &quot;trampoline&quot;) from unmanaged to managed code, and that invokation method is specific to the method signature you gave it, meaning there is no ambiguity as to what parameters can be passed in.</p>
+<p>Unmanaged Method Thunks are <em>technically</em> called "Unmanaged to Managed Thunks", but I call them "Unmanaged Method Thunks" because I accidentially misread the name once. Unmanaged Method Thunks is a concept added in version 2 of Mono, and they allow you to call C# methods with far less overhead compared to <code>mono_runtime_invoke</code>, this means that if you're calling a C# method many times a second, so maybe you have an <code>OnUpdate</code> method in C# that you're calling 60 - 144 times per second, you'd want to create an Unmanaged to Managed Thunk.</p>
+<p>Effectivley Unmanaged to Managed Thunks create a custom invokation method (e.g a custom "trampoline") from unmanaged to managed code, and that invokation method is specific to the method signature you gave it, meaning there is no ambiguity as to what parameters can be passed in.</p>
 <p>So, when should you use <code>mono_runtime_invoke</code> and when should you use Unmanaged Method Thunks? Well it depends. If you don't know the signature of the method at compile time (C++ compile time) then you have should probably use <code>mono_runtime_invoke</code>, although you <em>can</em> use Unmanaged Method Thunks as well, but generally for those you want the parameters to be known at compile time.</p>
 <p>A general rule of thumb is that if you're calling a C# method several times (more than 10 I'd say) per second, and you know the signature of that method at compile time you should use Unmanaged Method Thunks.</p>
 <p>If you don't know the method signature at compile time or if you're only calling the method every now and then instead of several times per second you probably want to go with <code>mono_runtime_invoke</code>.</p>
@@ -172,7 +172,7 @@ Using <code>mono_runtime_invoke</code> is slower compared to Unmanaged Method Th
 <pre><code class="language-cpp">MonoObject* InstantiateClass(const char* namespaceName, const char* className)
 {
     // Get a reference to the class we want to instantiate
-    MonoClass* testingClass = GetClassInAssembly(s_AppAssembly, &quot;&quot;, &quot;CSharpTesting&quot;);
+    MonoClass* testingClass = GetClassInAssembly(s_AppAssembly, "", "CSharpTesting");
 
     // Allocate an instance of our class
     MonoObject* classInstance = mono_object_new(s_AppDomain, testingClass);
@@ -192,11 +192,11 @@ void CallPrintFloatVarMethod(MonoObject* objectInstance)
     MonoClass* instanceClass = mono_object_get_class(objectInstance);
 
     // Get a reference to the method in the class
-    MonoMethod* method = mono_class_get_method_from_name(instanceClass, &quot;PrintFloatVar&quot;, 0);
+    MonoMethod* method = mono_class_get_method_from_name(instanceClass, "PrintFloatVar", 0);
 
     if (method == nullptr)
     {
-        // No method called &quot;PrintFloatVar&quot; with 0 parameters in the class, log error or something
+        // No method called "PrintFloatVar" with 0 parameters in the class, log error or something
         return;
     }
 
@@ -208,7 +208,7 @@ void CallPrintFloatVarMethod(MonoObject* objectInstance)
 }
 
 // ...
-MonoObject* testInstance = InstantiateClass(&quot;&quot;, &quot;CSharpTesting&quot;);
+MonoObject* testInstance = InstantiateClass("", "CSharpTesting");
 CallPrintFloatVarMethod(testInstance);
 </code></pre>
 <h3 id="explaining-the-code"><a class="header" href="#explaining-the-code">Explaining the Code</a></h3>
@@ -225,7 +225,7 @@ CallPrintFloatVarMethod(testInstance);
 <p>It's also worth noting that <code>mono_runtime_invoke</code> can actually return something to us. A <code>MonoObject*</code> in fact. This is useful if the method you're calling returns something and you want to retrieve and do something with that return value in C++. If the method is marked as <code>void</code> then <code>mono_runtime_invoke</code> will simply return <code>nullptr</code>.</p>
 <p>Our method doesn't return anything so we won't bother dealing with that for now, but don't worry I'll be sure to cover this as well.</p>
 <h2 id="passing-parameters-to-a-method"><a class="header" href="#passing-parameters-to-a-method">Passing Parameters to a Method</a></h2>
-<p>Now that we can call C# methods that don't return anything or take any parameters, I think it's time to learn how we can pass parameters to C# methods from C++. Before we get started I will say that passing parameters often times involves &quot;Marshalling&quot; the data between unmanaged and managed memory. I won't go into too much detail about <em>what</em> marshalling is, or how Mono handles it, but <a href="https://mark-borg.github.io/blog/2017/interop/">this</a> article explains it in a pretty good way, so I highly recommend reading it if you're interested in learning more. I also recommend reading <a href="https://www.mono-project.com/docs/advanced/embedding/#exposing-c-code-to-the-cil-universe:~:text=For%20example%2C%20passing,the%20marshalling%20attributes">this</a> example of marshalling in Mono specifically.</p>
+<p>Now that we can call C# methods that don't return anything or take any parameters, I think it's time to learn how we can pass parameters to C# methods from C++. Before we get started I will say that passing parameters often times involves "Marshalling" the data between unmanaged and managed memory. I won't go into too much detail about <em>what</em> marshalling is, or how Mono handles it, but <a href="https://mark-borg.github.io/blog/2017/interop/">this</a> article explains it in a pretty good way, so I highly recommend reading it if you're interested in learning more. I also recommend reading <a href="https://www.mono-project.com/docs/advanced/embedding/#exposing-c-code-to-the-cil-universe:~:text=For%20example%2C%20passing,the%20marshalling%20attributes">this</a> example of marshalling in Mono specifically.</p>
 <p>It's important to note that Mono will almost never handle marshalling for us, meaning we will need to do some manual type checking and coversions later on, for now we'll just be passing a simple float, which doesn't need to be marshalled in the first place.</p>
 <h3 id="the-code-1"><a class="header" href="#the-code-1">The Code</a></h3>
 <pre><code class="language-cpp">void CallIncrementFloatVarMethod(MonoObject* objectInstance, float value)
@@ -234,11 +234,11 @@ CallPrintFloatVarMethod(testInstance);
     MonoClass* instanceClass = mono_object_get_class(objectInstance);
 
     // Get a reference to the method in the class
-    MonoMethod* method = mono_class_get_method_from_name(instanceClass, &quot;IncrementFloatVar&quot;, 1);
+    MonoMethod* method = mono_class_get_method_from_name(instanceClass, "IncrementFloatVar", 1);
 
     if (method == nullptr)
     {
-        // No method called &quot;IncrementFloatVar&quot; with 1 parameter in the class, log error or something
+        // No method called "IncrementFloatVar" with 1 parameter in the class, log error or something
         return;
     }
 
@@ -261,7 +261,7 @@ CallPrintFloatVarMethod(testInstance);
 }
 
 // ...
-MonoObject* testInstance = InstantiateClass(&quot;&quot;, &quot;CSharpTesting&quot;);
+MonoObject* testInstance = InstantiateClass("", "CSharpTesting");
 CallIncrementFloatVarMethod(testInstance, 5.0f);
 </code></pre>
 <h3 id="explaining-the-code-1"><a class="header" href="#explaining-the-code-1">Explaining the Code</a></h3>

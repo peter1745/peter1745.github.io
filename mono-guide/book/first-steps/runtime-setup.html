@@ -90,7 +90,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="../introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="../introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="../first-steps/runtime-setup.html" class="active"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="../first-steps/testing-assembly-loading.html"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="../first-steps/classes.html"><strong aria-hidden="true">2.3.</strong> Classes</a></li><li class="chapter-item expanded "><a href="../first-steps/methods.html"><strong aria-hidden="true">2.4.</strong> Methods</a></li><li class="chapter-item expanded "><a href="../first-steps/fields.html"><strong aria-hidden="true">2.5.</strong> Fields and Properties</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="first-steps/testing-assembly-loading.html"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="first-steps/classes.html"><strong aria-hidden="true">2.3.</strong> Classes</a></li><li class="chapter-item expanded "><a href="first-steps/methods.html"><strong aria-hidden="true">2.4.</strong> Methods</a></li><li class="chapter-item expanded "><a href="first-steps/fields.html"><strong aria-hidden="true">2.5.</strong> Fields and Properties</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -98,7 +98,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -160,7 +160,7 @@
 <p>So in my case it would look like this:</p>
 <pre><code class="language-cpp">void InitMono()
 {
-    mono_set_assemblies_path(&quot;mono/lib&quot;);
+    mono_set_assemblies_path("mono/lib");
 }
 </code></pre>
 <p>If you don't provide this path to Mono you'll see an error message printed in the console, it would look something like this:
@@ -172,9 +172,9 @@ Well the difference has to do with what version of the runtime we use. By using 
 <p>When calling this function we get a <code>MonoDomain</code> pointer, it's important that we store that pointer since we have to manually clean it up later on. The interesting thing is that Mono actually stores this pointer internally as well, and according to the Mono developers it doesn't really make sense that we have to keep track of that pointer as well, but that's just the way it is, so make sure to store it somewhere.</p>
 <pre><code class="language-cpp">void InitMono()
 {
-    mono_set_assemblies_path(&quot;mono/lib&quot;);
+    mono_set_assemblies_path("mono/lib");
 
-    MonoDomain* rootDomain = mono_jit_init(&quot;MyScriptRuntime&quot;);
+    MonoDomain* rootDomain = mono_jit_init("MyScriptRuntime");
     if (rootDomain == nullptr)
     {
         // Maybe log some error here
@@ -191,9 +191,9 @@ Well the difference has to do with what version of the runtime we use. By using 
 <p>Mono makes it trivially easy to create a new App Domain, all we have to do is call <code>mono_domain_create_appdomain</code> and give our App Domain a name. Remember to store the <code>MonoDomain</code> pointer returned by this function somewhere, we'll need it later on. This process will become slightly more complicated in the future but for now we'll just modify our initalization function to look like this:</p>
 <pre><code class="language-cpp">void InitMono()
 {
-    mono_set_assemblies_path(&quot;mono/lib&quot;);
+    mono_set_assemblies_path("mono/lib");
 
-    MonoDomain* rootDomain = mono_jit_init(&quot;MyScriptRuntime&quot;);
+    MonoDomain* rootDomain = mono_jit_init("MyScriptRuntime");
     if (rootDomain == nullptr)
     {
         // Maybe log some error here
@@ -204,7 +204,7 @@ Well the difference has to do with what version of the runtime we use. By using 
     s_RootDomain = rootDomain;
 
     // Create an App Domain
-    s_AppDomain = mono_domain_create_appdomain(&quot;MyAppDomain&quot;, nullptr);
+    s_AppDomain = mono_domain_create_appdomain("MyAppDomain", nullptr);
     mono_domain_set(s_AppDomain, true);
 }
 </code></pre>

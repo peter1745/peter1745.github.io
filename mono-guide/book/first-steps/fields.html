@@ -90,7 +90,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="../introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="../introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="../first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="../first-steps/testing-assembly-loading.html"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="../first-steps/classes.html"><strong aria-hidden="true">2.3.</strong> Classes</a></li><li class="chapter-item expanded "><a href="../first-steps/methods.html"><strong aria-hidden="true">2.4.</strong> Methods</a></li><li class="chapter-item expanded "><a href="../first-steps/fields.html" class="active"><strong aria-hidden="true">2.5.</strong> Fields and Properties</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="first-steps/testing-assembly-loading.html"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="first-steps/classes.html"><strong aria-hidden="true">2.3.</strong> Classes</a></li><li class="chapter-item expanded "><a href="first-steps/methods.html"><strong aria-hidden="true">2.4.</strong> Methods</a></li><li class="chapter-item expanded "><a href="first-steps/fields.html"><strong aria-hidden="true">2.5.</strong> Fields and Properties</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -98,7 +98,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -166,7 +166,7 @@ public class CSharpTesting
 {
     public float MyPublicFloatVar = 5.0f;
 
-    private string m_Name = &quot;Hello&quot;;
+    private string m_Name = "Hello";
     public string Name
     {
         get =&gt; m_Name;
@@ -179,7 +179,7 @@ public class CSharpTesting
 
     public void PrintFloatVar()
     {
-        Console.WriteLine(&quot;MyPublicFloatVar = {0:F}&quot;, MyPublicFloatVar);
+        Console.WriteLine("MyPublicFloatVar = {0:F}", MyPublicFloatVar);
     }
 
     private void IncrementFloatVar(float value)
@@ -190,17 +190,17 @@ public class CSharpTesting
 }
 </code></pre>
 <p>And on the C++ side of things:</p>
-<pre><code class="language-cpp">MonoObject* testingInstance = InstantiateClass(&quot;&quot;, &quot;CSharpTesting&quot;);
+<pre><code class="language-cpp">MonoObject* testingInstance = InstantiateClass("", "CSharpTesting");
 MonoClass* testingClass = mono_object_get_class(testingInstance);
 
-// Get a reference to the public field called &quot;MyPublicFloatVar&quot;
-MonoClassField* floatField = mono_class_get_field_from_name(testingClass, &quot;MyPublicFloatVar&quot;);
+// Get a reference to the public field called "MyPublicFloatVar"
+MonoClassField* floatField = mono_class_get_field_from_name(testingClass, "MyPublicFloatVar");
 
-// Get a reference to the private field called &quot;m_Name&quot;
-MonoClassField* nameField = mono_class_get_field_from_name(testingClass, &quot;m_Name&quot;);
+// Get a reference to the private field called "m_Name"
+MonoClassField* nameField = mono_class_get_field_from_name(testingClass, "m_Name");
 
-// Get a reference to the public property called &quot;Name&quot;
-MonoProperty* nameProperty = mono_class_get_property_from_name(testingClass, &quot;Name&quot;);
+// Get a reference to the public property called "Name"
+MonoProperty* nameProperty = mono_class_get_property_from_name(testingClass, "Name");
 
 // Do something
 
@@ -337,11 +337,11 @@ uint8_t GetPropertyAccessbility(MonoProperty* property)
 
 // ...
 
-MonoObject* testingInstance = InstantiateClass(&quot;&quot;, &quot;CSharpTesting&quot;);
+MonoObject* testingInstance = InstantiateClass("", "CSharpTesting");
 MonoClass* testingClass = mono_object_get_class(testingInstance);
 
-// Get a reference to the public field called &quot;MyPublicFloatVar&quot;
-MonoClassField* floatField = mono_class_get_field_from_name(testingClass, &quot;MyPublicFloatVar&quot;);
+// Get a reference to the public field called "MyPublicFloatVar"
+MonoClassField* floatField = mono_class_get_field_from_name(testingClass, "MyPublicFloatVar");
 uint8_t floatFieldAccessibility = GetFieldAccessibility(floatField);
 
 if (floatFieldAccessibility &amp; (uint8_t)Accessibility::Public)
@@ -349,8 +349,8 @@ if (floatFieldAccessibility &amp; (uint8_t)Accessibility::Public)
     // We can safely write a value to this
 }
 
-// Get a reference to the private field called &quot;m_Name&quot;
-MonoClassField* nameField = mono_class_get_field_from_name(testingClass, &quot;m_Name&quot;);
+// Get a reference to the private field called "m_Name"
+MonoClassField* nameField = mono_class_get_field_from_name(testingClass, "m_Name");
 uint8_t nameFieldAccessibility = GetFieldAccessibility(nameField);
 
 if (nameFieldAccessibility &amp; (uint8_t)Accessibility::Private)
@@ -358,8 +358,8 @@ if (nameFieldAccessibility &amp; (uint8_t)Accessibility::Private)
     // We shouldn't write to this field
 }
 
-// Get a reference to the public property called &quot;Name&quot;
-MonoProperty* nameProperty = mono_class_get_property_from_name(testingClass, &quot;Name&quot;);
+// Get a reference to the public property called "Name"
+MonoProperty* nameProperty = mono_class_get_property_from_name(testingClass, "Name");
 uint8_t namePropertyAccessibility = GetPropertyAccessibility(nameProperty);
 
 if (namePropertyAccessibility &amp; (uint8_t)Accessibility::Public)
@@ -401,9 +401,9 @@ if (namePropertyAccessibility &amp; (uint8_t)Accessibility::Public)
 	{
 		unsigned short errorCode = mono_error_get_error_code(&amp;error);
 		const char* errorMessage = mono_error_get_message(&amp;error);
-        printf(&quot;Mono Error!\n&quot;);
-        printf(&quot;\tError Code: %hu\n&quot;, errorCode);
-        printf(&quot;\tError Message: %s\n&quot;, errorMessage);
+        printf("Mono Error!\n");
+        printf("\tError Code: %hu\n", errorCode);
+        printf("\tError Message: %s\n", errorMessage);
 		mono_error_cleanup(&amp;error);
 	}
 	return hasError;
@@ -412,21 +412,21 @@ if (namePropertyAccessibility &amp; (uint8_t)Accessibility::Public)
 std::string MonoStringToUTF8(MonoString* monoString)
 {
 	if (monoString == nullptr || mono_string_length(monoString) == 0)
-		return &quot;&quot;;
+		return "";
 
 	MonoError error;
 	char* utf8 = mono_string_to_utf8_checked(monoString, &amp;error);
 	if (CheckMonoError(error))
-		return &quot;&quot;;
+		return "";
 	std::string result(utf8);
 	mono_free(utf8);
 	return result;
 }
 
-MonoObject* testingInstance = InstantiateClass(&quot;&quot;, &quot;CSharpTesting&quot;);
+MonoObject* testingInstance = InstantiateClass("", "CSharpTesting");
 MonoClass* testingClass = mono_object_get_class(testingInstance);
 
-MonoClassField* floatField = mono_class_get_field_from_name(testingClass, &quot;MyPublicFloatVar&quot;);
+MonoClassField* floatField = mono_class_get_field_from_name(testingClass, "MyPublicFloatVar");
 
 // Get the value of MyPublicFloatVar from the testingInstance object
 float value;
@@ -436,14 +436,14 @@ mono_field_get_value(testingInstance, floatField, &amp;value);
 value += 10.0f;
 mono_field_set_value(testingInstance, floatField, &amp;value);
 
-MonoProperty* nameProperty = mono_class_get_property_from_name(testingClass, &quot;Name&quot;);
+MonoProperty* nameProperty = mono_class_get_property_from_name(testingClass, "Name");
 
 // Get the value of Name by invoking the getter method
 MonoString* nameValue = (MonoString*)mono_property_get_value(nameProperty, testingInstance, nullptr, nullptr);
 std::string nameStr = MonoStringToUTF8(nameValue);
 
 // Modify and assign the value back to the property by invoking the setter method
-nameStr += &quot;, World!&quot;;
+nameStr += ", World!";
 nameValue = mono_string_new(s_AppDomain, nameStr.c_str());
 mono_property_set_value(nameProperty, testingInstance, (void**)&amp;nameValue, nullptr);
 
@@ -462,7 +462,7 @@ If you're getting a value type as long as the value isn't boxed, like we're doin
 <p>First of all we call <code>mono_property_get_value</code>, which will invoke the properties getter method for us. The first two parameters are simply the property itself and the class instance. The last two parameters, where we pass nullptr represent any parameters that the getter method might expect, and lastly a pointer to a <code>MonoException*</code> that we can get back from the method in case it throws one. The third parameter doesn't really make sense in my opinion since a property's getter method <em>can't</em> take any parameters that I'm aware of, so I'll always pass <code>nullptr</code>.</p>
 <p>As you can see we're getting a string, and because of that we simply get a pointer to a <code>MonoString</code> struct, which holds a pointer to the C# string, in managed memory. It's important to note that <code>mono_property_get_value</code> returns a <code>MonoObject</code> pointer, which in the case of a string should simply be cast to a <code>MonoString</code> pointer.</p>
 <p>In the case of e.g a value type it will return the value boxed inside a <code>MonoObject</code>, meaning we'll have to unbox it. I <em>highly</em> recommend you read up on boxing and unboxing <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/types/boxing-and-unboxing">here</a>.</p>
-<p>But since in this case we're getting a string we simply cast it, and then convert it to an <code>std::string</code>. As you can see we do use <code>mono_string_to_utf8_checked</code>, and I wanted to mention that if there is a &quot;checked&quot; version of a Mono function available you should <strong>always</strong> use that one, and <strong>never</strong> the unchecked version. This function also returns a pointer to a buffer, and we're in charge of freeing it after we're done with it. So keep that in mind.</p>
+<p>But since in this case we're getting a string we simply cast it, and then convert it to an <code>std::string</code>. As you can see we do use <code>mono_string_to_utf8_checked</code>, and I wanted to mention that if there is a "checked" version of a Mono function available you should <strong>always</strong> use that one, and <strong>never</strong> the unchecked version. This function also returns a pointer to a buffer, and we're in charge of freeing it after we're done with it. So keep that in mind.</p>
 <p>If you want to see how to deal with unboxing value types like floats, see the code I've written below.</p>
 <p>Alright, now that we've got our string and we've modified it, it's time to assing it back to C#. As I'm sure you're aware we're doing a <em>lot</em> of copying here, but don't worry too much about it since you most likely won't be getting and setting C# values from C++ every frame.</p>
 <p>In order to invoke the setter function of the property we call <code>mono_property_set_value</code>, and just like with the getter we pass the property and the class instance. Then we have to pass the value itself. The last parameter is again a pointer to a <code>MonoObject*</code>, which will contain any exceptions thrown by the setter. I'm passing <code>nullptr</code> here again.</p>
@@ -471,7 +471,7 @@ If you're getting a value type as long as the value isn't boxed, like we're doin
 <p>In the case of a <code>MonoObject*</code> or a <code>MonoString*</code> you can simply pass the memory address and cast it to a <code>void**</code>. Although I do recommend going with the <code>void*</code> array approach, since that works at all times.</p>
 <p>You can probably tell that in the example above we call <code>mono_string_new</code>, and pass the AppDomain as well as the C string in order to construct a new <code>MonoString</code>. We do this because we can't, and shouldn't attempt to modify the <code>MonoString</code> we got from the property, I won't go into <em>too</em> much detail on strings because I'll cover them in-depth later on.</p>
 <h3 id="dealing-with-value-types-and-properties"><a class="header" href="#dealing-with-value-types-and-properties">Dealing with Value Types and Properties</a></h3>
-<pre><code class="language-cpp">MonoProperty* floatProperty = mono_class_get_property_from_name(testingClass, &quot;MyFloatProperty&quot;);
+<pre><code class="language-cpp">MonoProperty* floatProperty = mono_class_get_property_from_name(testingClass, "MyFloatProperty");
 
 // Get the value of Name by invoking the getter method
 MonoObject* floatValueObj = mono_property_get_value(floatProperty, testingInstance, nullptr, nullptr);

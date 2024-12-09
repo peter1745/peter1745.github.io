@@ -90,7 +90,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="../introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="../introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="../first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="../first-steps/testing-assembly-loading.html" class="active"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="../first-steps/classes.html"><strong aria-hidden="true">2.3.</strong> Classes</a></li><li class="chapter-item expanded "><a href="../first-steps/methods.html"><strong aria-hidden="true">2.4.</strong> Methods</a></li><li class="chapter-item expanded "><a href="../first-steps/fields.html"><strong aria-hidden="true">2.5.</strong> Fields and Properties</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="introduction/about-mono.html"><strong aria-hidden="true">1.1.</strong> About Mono</a></li><li class="chapter-item expanded "><a href="introduction/building-mono.html"><strong aria-hidden="true">1.2.</strong> Building Mono</a></li><li class="chapter-item expanded "><a href="introduction/necessary-files.html"><strong aria-hidden="true">1.3.</strong> Getting the Necessary Files</a></li></ol></li><li class="chapter-item expanded "><a href="first-steps/runtime-setup.html"><strong aria-hidden="true">2.</strong> First Steps</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-steps/loading-assemblies.html"><strong aria-hidden="true">2.1.</strong> Loading Assemblies</a></li><li class="chapter-item expanded "><a href="first-steps/testing-assembly-loading.html"><strong aria-hidden="true">2.2.</strong> Testing Assembly Loading</a></li><li class="chapter-item expanded "><a href="first-steps/classes.html"><strong aria-hidden="true">2.3.</strong> Classes</a></li><li class="chapter-item expanded "><a href="first-steps/methods.html"><strong aria-hidden="true">2.4.</strong> Methods</a></li><li class="chapter-item expanded "><a href="first-steps/fields.html"><strong aria-hidden="true">2.5.</strong> Fields and Properties</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -98,7 +98,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -173,13 +173,13 @@
         const char* nameSpace = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAMESPACE]);
         const char* name = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAME]);
 
-        printf(&quot;%s.%s\n&quot;, nameSpace, name);
+        printf("%s.%s\n", nameSpace, name);
     }
 }
 </code></pre>
 <h2 id="tables"><a class="header" href="#tables">Tables</a></h2>
-<p>And that's how easy it is to iterate through all the type definitions in our assembly! But, what does this code <em>actually</em> do? Well it's actually quite simple, simply put the assembly itself stores all the necessary info about the data it contains in a set of tables, you can find a list of all the tables and their columns <a href="http://docs.go-mono.com/?link=xhtml%3adeploy%2fmono-api-metadata.html">here</a>, scroll down to the &quot;Metadata Tables&quot; section and you'll find a list of them.</p>
-<p>Basically what Mono allows us to do is to iterate through all the rows in each table, in the case of the <code>MONO_TABLE_TYPEDEF</code> table each row represents a type, and the columns contains information about that type. We can get a table from an image by making use of <code>mono_image_get_table_info</code>, and passing in the image and the &quot;id&quot; of the table we want.</p>
+<p>And that's how easy it is to iterate through all the type definitions in our assembly! But, what does this code <em>actually</em> do? Well it's actually quite simple, simply put the assembly itself stores all the necessary info about the data it contains in a set of tables, you can find a list of all the tables and their columns <a href="http://docs.go-mono.com/?link=xhtml%3adeploy%2fmono-api-metadata.html">here</a>, scroll down to the "Metadata Tables" section and you'll find a list of them.</p>
+<p>Basically what Mono allows us to do is to iterate through all the rows in each table, in the case of the <code>MONO_TABLE_TYPEDEF</code> table each row represents a type, and the columns contains information about that type. We can get a table from an image by making use of <code>mono_image_get_table_info</code>, and passing in the image and the "id" of the table we want.</p>
 <p>And as you can see from the code we can get the assembly image from an assembly by calling <code>mono_assembly_get_image</code> and passing in the assembly.</p>
 <h2 id="rows-and-columns"><a class="header" href="#rows-and-columns">Rows and Columns</a></h2>
 <p>After we have the table that we want to iterate through we have to get the number of rows, or type definitions in this case, in that table, we can do that by calling <code>mono_table_info_get_rows</code> and passing in the table info pointer.</p>

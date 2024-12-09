@@ -99,7 +99,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -164,7 +164,7 @@
 <p>Yes, Mono <em>does</em> have a documentation site for embedding: <a href="http://docs.go-mono.com/?link=root%3a%2fembed">http://docs.go-mono.com/</a>, but in my experience it's all but useless. There are a few open source (or at least source available) projects out there that have embedded Mono, but there's no real <em>documentation</em> available.</p>
 <p><strong>So</strong>, that's why I decided to create this guide. I've been through the pain of googling for hours to figure out how to do something in Mono, and I figured I could help spare others from that pain.</p>
 <p>Before we get started I just wanted to say that this guide is <strong>not</strong> a guide on building a complete scripting engine, it's just meant to give you the knowledge you <em>need</em> to write a scripting engine.</p>
-<p>I will also mention that the &quot;First Steps&quot; section only covers the very basics, I'll go into way more depth and show more complex code in a more advanced section later on.</p>
+<p>I will also mention that the "First Steps" section only covers the very basics, I'll go into way more depth and show more complex code in a more advanced section later on.</p>
 <h2 id="credits"><a class="header" href="#credits">Credits</a></h2>
 <p>I'm not the only person who has contributed to this. I've had some help with certain parts of it, so I wanted to make sure to mention anyone that has helped out.</p>
 <ul>
@@ -173,17 +173,17 @@
 <h2 id="the-game-engine-series"><a class="header" href="#the-game-engine-series">The Game Engine Series</a></h2>
 <p>As I've mentioned this guide <em>isn't</em> meant to teach you how to write a fully fledged scripting engine. But there <em>is</em> a series on YouTube that <em>does</em> cover writing a scripting engine in C++, the <a href="https://www.youtube.com/playlist?list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT">Game Engine Series</a> from <a href="https://www.youtube.com/c/TheChernoProject">The Cherno</a>.</p>
 <p>The scripting engine that he's writing is based on the scripting engine that I wrote for Hazel, and he does reference this guide as well. I highly recommend watching the C# scripting related episodes if you're interested in how you can design an actual scripting API.</p>
-<p>Understandably there's a <em>lot</em> of different ways of writing a scripting engine, and there's no &quot;correct&quot; way of doing so, although there are worse ways and better ways, as with everything.</p>
+<p>Understandably there's a <em>lot</em> of different ways of writing a scripting engine, and there's no "correct" way of doing so, although there are worse ways and better ways, as with everything.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="about-mono"><a class="header" href="#about-mono">About Mono</a></h1>
 <h2 id="what-is-mono"><a class="header" href="#what-is-mono">What <em>is</em> Mono?</a></h2>
 <p>I would assume that you already know what Mono is since you decided to check out this guide, but I'll give a short explanation just in case.</p>
 <p>In short: Mono is an open source implementation of Microsoft's <a href="https://en.wikipedia.org/wiki/.NET_Framework">.NET Framework</a>. It was originally designed to bring .NET languages (mostly C#) to platforms other than Windows.
 Nowadays it's not strictly necessary for cross-platform support, since Microsoft has been working on making .NET cross-platform natively. But Mono is still very useful for scripting engines, because unlike .NET Core, or .NET Framework, it provides a decent C/C++ API for embedding a .NET runtime.</p>
 <h2 id="multiple-versions-of-mono"><a class="header" href="#multiple-versions-of-mono">Multiple versions of Mono?</a></h2>
-<p>Now, there are actually <em>two</em> versions of Mono, there's what I call &quot;Classic Mono&quot;, which is mainly what we'll be covering here, then there's what I call the &quot;.NET Core Mono&quot;. I won't get into the differences between .NET Core and .NET Framework, but the biggest difference is that classic Mono only supports up to C# 7, or .NET Framework 4.7.2, where as .NET Core Mono supports the latest version of C#, and is developed as part of the .NET Runtime project.</p>
+<p>Now, there are actually <em>two</em> versions of Mono, there's what I call "Classic Mono", which is mainly what we'll be covering here, then there's what I call the ".NET Core Mono". I won't get into the differences between .NET Core and .NET Framework, but the biggest difference is that classic Mono only supports up to C# 7, or .NET Framework 4.7.2, where as .NET Core Mono supports the latest version of C#, and is developed as part of the .NET Runtime project.</p>
 <p>Both versions of Mono are developed by Microsoft, but classic Mono isn't <em>integrated</em> into .NET, where as .NET Core Mono <em>is</em>. I will eventually cover building the .NET Core version of Mono as well, but I'll start by covering classic Mono because it's simpler, and more suited for game engines (I'll explain why later on).</p>
 <h2 id="why-not-use-the-net-core-version"><a class="header" href="#why-not-use-the-net-core-version">Why not use the .NET Core version?</a></h2>
-<p>So, why aren't we going to use the .NET Core version of Mono? Simply put: It doesn't support <em>assembly reloading</em>. If you don't know what C# assemblies are I'd recommend you read up a bit on them, but they're essentially a DLL file that contains all your code, converted to an intermediate language (commonly referred to as &quot;IL&quot; or &quot;Bytecode&quot;).</p>
+<p>So, why aren't we going to use the .NET Core version of Mono? Simply put: It doesn't support <em>assembly reloading</em>. If you don't know what C# assemblies are I'd recommend you read up a bit on them, but they're essentially a DLL file that contains all your code, converted to an intermediate language (commonly referred to as "IL" or "Bytecode").</p>
 <p>So why does assembly reloading matter in this case? Because when you, or anyone else, is writing C# scripts you want the changes you make to the code to take effect in the engine (or editor) immediately, without having to restart the entire editor / game. And in order to do so we first have to unload the old assembly, and load in the new one, without restarting the program.</p>
 <p>And in its current state the .NET Core version of Mono doesn't support unloading C# assemblies, where as classic Mono does. When I was initially rewriting the scripting engine for Hazel I wanted to use the .NET Core version because it would've meant that we could support the latest C# version. And unfortunately I only discovered that assembly unloading wasn't supported about 3 months into rewriting the scripting engine...</p>
 <p>As it was I got in touch with the developers of Mono to ask them if it was possible to reload assemblies in any way, and they told me no. So I asked them if they knew <em>when</em> that would be supported, and they told me they didn't know... (Yes, I may still be <em>slightly</em> annoyed with them for releasing the .NET Core version without assembly reloading support)</p>
@@ -220,7 +220,7 @@ Nowadays it's not strictly necessary for cross-platform support, since Microsoft
 <p>In order to build Mono you just need to navigate to <code>mono/msvc/</code> and open up <strong>mono.sln</strong> in Visual Studio. All you need to do now is select the build configuration and the platform to build for.</p>
 <p>I recommend building both the <code>Release</code> and the <code>Debug</code> configuration since only building <code>Release</code> will mean you'll have an even harder time debugging Mono related issues. If you want to build 64-bit or 32-bit doesn't really matter for the sake of this guide, but these days you really don't need to support 32-bit platforms.
 After that just start the build and let it run!</p>
-<p>If you've done everything correctly (which I assume you have since it's not hard building Mono on Windows) you can move on to the &quot;Getting the Necessary Files&quot; chapter.</p>
+<p>If you've done everything correctly (which I assume you have since it's not hard building Mono on Windows) you can move on to the "Getting the Necessary Files" chapter.</p>
 <h3 id="linux"><a class="header" href="#linux">Linux</a></h3>
 <p><strong>Coming Soon!</strong></p>
 <h3 id="macosx"><a class="header" href="#macosx">MacOSX</a></h3>
@@ -303,14 +303,14 @@ I may end up covering the other folders at a later date, but I have only recentl
 <p>Before we continue I will say that <em>most</em> of the time you'll only need to link with <code>libmonosgen-2.0.dylib</code>, but you should still keep the other files around in case you need them later on, or you can delete them if you want to minimize the size of your project as much as possible.</p>
 <h2 id="all-done"><a class="header" href="#all-done">All Done!</a></h2>
 <p>Alright, now you should have all the necessary files, and your project <em>should</em> be configured correctly, but if you don't know how to e.g link the Mono libraries to your project, or add the include directory, well, then <em>maybe</em> you shouldn't be considering embedding Mono just yet.</p>
-<p>Once you've got your project configured and linking with Mono, feel free to move on to the &quot;Setting up the Runtime&quot; section of this guide!</p>
+<p>Once you've got your project configured and linking with Mono, feel free to move on to the "Setting up the Runtime" section of this guide!</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="setting-up-the-runtime"><a class="header" href="#setting-up-the-runtime">Setting up the Runtime</a></h1>
 <p>Now that we've built Mono, gotten all the necessary files, and <em>hopefully</em> setup our project correctly, it's time to start coding! The very first thing we have to do is initialize the Mono runtime.</p>
 <p>In order to properly initialize Mono we have to start by including <code>mono/jit/jit.h</code>, and <code>mono/metadata/assembly.h</code>. Once that's done we have to let Mono know where the .NET libraries are located. The function we'll have to call is <code>mono_set_assemblies_path</code>. Keep in mind that the path provided to this function have to either be an absolute path (e.g <code>D:\dev\Engine\mono\lib</code>), or a path relative to the current working directory (e.g <code>mono/lib</code>).</p>
 <p>So in my case it would look like this:</p>
 <pre><code class="language-cpp">void InitMono()
 {
-    mono_set_assemblies_path(&quot;mono/lib&quot;);
+    mono_set_assemblies_path("mono/lib");
 }
 </code></pre>
 <p>If you don't provide this path to Mono you'll see an error message printed in the console, it would look something like this:
@@ -322,9 +322,9 @@ Well the difference has to do with what version of the runtime we use. By using 
 <p>When calling this function we get a <code>MonoDomain</code> pointer, it's important that we store that pointer since we have to manually clean it up later on. The interesting thing is that Mono actually stores this pointer internally as well, and according to the Mono developers it doesn't really make sense that we have to keep track of that pointer as well, but that's just the way it is, so make sure to store it somewhere.</p>
 <pre><code class="language-cpp">void InitMono()
 {
-    mono_set_assemblies_path(&quot;mono/lib&quot;);
+    mono_set_assemblies_path("mono/lib");
 
-    MonoDomain* rootDomain = mono_jit_init(&quot;MyScriptRuntime&quot;);
+    MonoDomain* rootDomain = mono_jit_init("MyScriptRuntime");
     if (rootDomain == nullptr)
     {
         // Maybe log some error here
@@ -341,9 +341,9 @@ Well the difference has to do with what version of the runtime we use. By using 
 <p>Mono makes it trivially easy to create a new App Domain, all we have to do is call <code>mono_domain_create_appdomain</code> and give our App Domain a name. Remember to store the <code>MonoDomain</code> pointer returned by this function somewhere, we'll need it later on. This process will become slightly more complicated in the future but for now we'll just modify our initalization function to look like this:</p>
 <pre><code class="language-cpp">void InitMono()
 {
-    mono_set_assemblies_path(&quot;mono/lib&quot;);
+    mono_set_assemblies_path("mono/lib");
 
-    MonoDomain* rootDomain = mono_jit_init(&quot;MyScriptRuntime&quot;);
+    MonoDomain* rootDomain = mono_jit_init("MyScriptRuntime");
     if (rootDomain == nullptr)
     {
         // Maybe log some error here
@@ -354,7 +354,7 @@ Well the difference has to do with what version of the runtime we use. By using 
     s_RootDomain = rootDomain;
 
     // Create an App Domain
-    s_AppDomain = mono_domain_create_appdomain(&quot;MyAppDomain&quot;, nullptr);
+    s_AppDomain = mono_domain_create_appdomain("MyAppDomain", nullptr);
     mono_domain_set(s_AppDomain, true);
 }
 </code></pre>
@@ -363,10 +363,10 @@ Well the difference has to do with what version of the runtime we use. By using 
 <p>Now that we've created our AppDomain we can finally start working towards running C# code from C++! All we have to do now is load a C# assembly, which we'll cover in the next section.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="loading-assemblies"><a class="header" href="#loading-assemblies">Loading Assemblies</a></h1>
 <p>In this section we'll cover how you can load a C# assmebly using Mono. First of all you should know that an assembly in C# (and in .NET in general) can be <em>either</em> a DLL or an EXE file. Now before we start writing the loading code we have to have an assembly to load.</p>
-<p>In this example we'll be building our C# project as a Dynamic Link Library, or DLL, Visual Studio calls the project type for DLLs &quot;Class Library&quot; so make sure your C# project has the &quot;Output Type&quot; set to &quot;Class Library&quot;, as shown in the image below:</p>
+<p>In this example we'll be building our C# project as a Dynamic Link Library, or DLL, Visual Studio calls the project type for DLLs "Class Library" so make sure your C# project has the "Output Type" set to "Class Library", as shown in the image below:</p>
 <p><img src="first-steps/../res/vs-project-type.jpg" alt="VisualStudioProjectType" /></p>
 <h2 id="c-code"><a class="header" href="#c-code">C# Code</a></h2>
-<p>In the beginning we'll simply write some basic C# code that will allow us to make sure our code actually works. To start I'll create a C# class called &quot;CSharpTester&quot;, and we'll add some basic data and methods to it.</p>
+<p>In the beginning we'll simply write some basic C# code that will allow us to make sure our code actually works. To start I'll create a C# class called "CSharpTester", and we'll add some basic data and methods to it.</p>
 <pre><code class="language-cs">using System;
 
 public class CSharpTesting
@@ -375,7 +375,7 @@ public class CSharpTesting
 
     public void PrintFloatVar()
     {
-        Console.WriteLine(&quot;MyPublicFloatVar = {0:F}&quot;, MyPublicFloatVar);
+        Console.WriteLine("MyPublicFloatVar = {0:F}", MyPublicFloatVar);
     }
 
     private void IncrementFloatVar(float value)
@@ -386,7 +386,7 @@ public class CSharpTesting
 }
 </code></pre>
 <p>For now we won't actually be running any of this code, but we'll be checking that the class exists in the assembly after we've loaded it. This code will also be used to demonstrate a few things that you need to keep in mind when using Mono.</p>
-<p>But for now just go ahead and build your project, you should get a DLL file with your project name somewhere in your project folder, look for a folder called &quot;bin&quot; and you should find it. Remember the file path since we'll need it to load the DLL.</p>
+<p>But for now just go ahead and build your project, you should get a DLL file with your project name somewhere in your project folder, look for a folder called "bin" and you should find it. Remember the file path since we'll need it to load the DLL.</p>
 <h2 id="c-code-1"><a class="header" href="#c-code-1">C++ Code</a></h2>
 <p>So now it's time for us to write the code that will actually load the C# DLL into Mono. Typically in a game engine you'll have two DLLs that you'll need to load, one that contains the game code, and one that's provided by the engine.</p>
 <p>Typically the engine will provide a C# DLL that the game code will link to, this is so that the engine developers can provide a safe API for the user to interact with. Because of this we'll be writing a generic function that will simply load any DLL, this function will take a path to the DLL file as an argument and it will return a pointer to a <code>MonoAssembly</code>.</p>
@@ -447,7 +447,7 @@ public class CSharpTesting
 }
 </code></pre>
 <p>Now I'll go through and explain this code bit by bit. First we read the bytes of the C# assembly into a <code>char*</code> buffer. After that we need to give Mono the data that we loaded, we can do this by calling <code>mono_image_open_from_data_full</code>. The first two parameters should be self-explanatory, it's just the data and the size of the data. The third parameter tells Mono if we want it to copy the data, or if we'll be responsible for storing it, here we pass <code>1</code>, indicating that Mono will copy the data into an internal buffer. The fourth parameter is a pointer to a <code>MonoImageOpenStatus</code> enum, we can use this value to determine if Mono was able to read the data we passed to it, or if there was an issue somewhere.</p>
-<p>The last parameter is also a boolean value, and if it's set to true, or <code>1</code>, it means that Mono will load our image in &quot;reflection mode&quot;, meaning we can inspect the types, but not run any code. If you're building an application similiar to JetBrains <a href="https://www.jetbrains.com/decompiler/">dotPeek</a> program you'd most likely want to set this parameter to true, but since we want to <em>run</em> the code we'll set it to false, or <code>0</code>.</p>
+<p>The last parameter is also a boolean value, and if it's set to true, or <code>1</code>, it means that Mono will load our image in "reflection mode", meaning we can inspect the types, but not run any code. If you're building an application similiar to JetBrains <a href="https://www.jetbrains.com/decompiler/">dotPeek</a> program you'd most likely want to set this parameter to true, but since we want to <em>run</em> the code we'll set it to false, or <code>0</code>.</p>
 <p><code>mono_image_open_from_data_full</code> will return a valid pointer to a <code>MonoImage</code> struct if it successfully interpreted our data, or <code>nullptr</code> if it failed. After we've loaded our data into Mono we'll check that the <code>status</code> variable is set to <code>MONO_IMAGE_OK</code>, and if it's not we'll query Mono for an error message describing what went wrong, we do this using <code>mono_image_strerror</code> which converts our status variable to a more user-friendly error message.</p>
 <p>Now that we have a valid image loaded we'll have to create a <code>MonoAssembly</code> from it, luckily this is really easy, we just have to call <code>mono_assembly_load_from_full</code> and give it the image. If this function succeeds we'll get a pointer to a <code>MonoAssembly</code> struct returned, otherwise it'll return <code>nullptr</code>.</p>
 <p>The first parameter of this function is the image that we got back from Mono, the second parameter is essentially just a name that Mono can use when printing errors, the third parameter is our <code>status</code> variable again. This function will write to our <code>status</code> variable if there's an error, but at this point there really shouldn't be an error generated so we won't check for it.</p>
@@ -475,13 +475,13 @@ public class CSharpTesting
         const char* nameSpace = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAMESPACE]);
         const char* name = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAME]);
 
-        printf(&quot;%s.%s\n&quot;, nameSpace, name);
+        printf("%s.%s\n", nameSpace, name);
     }
 }
 </code></pre>
 <h2 id="tables"><a class="header" href="#tables">Tables</a></h2>
-<p>And that's how easy it is to iterate through all the type definitions in our assembly! But, what does this code <em>actually</em> do? Well it's actually quite simple, simply put the assembly itself stores all the necessary info about the data it contains in a set of tables, you can find a list of all the tables and their columns <a href="http://docs.go-mono.com/?link=xhtml%3adeploy%2fmono-api-metadata.html">here</a>, scroll down to the &quot;Metadata Tables&quot; section and you'll find a list of them.</p>
-<p>Basically what Mono allows us to do is to iterate through all the rows in each table, in the case of the <code>MONO_TABLE_TYPEDEF</code> table each row represents a type, and the columns contains information about that type. We can get a table from an image by making use of <code>mono_image_get_table_info</code>, and passing in the image and the &quot;id&quot; of the table we want.</p>
+<p>And that's how easy it is to iterate through all the type definitions in our assembly! But, what does this code <em>actually</em> do? Well it's actually quite simple, simply put the assembly itself stores all the necessary info about the data it contains in a set of tables, you can find a list of all the tables and their columns <a href="http://docs.go-mono.com/?link=xhtml%3adeploy%2fmono-api-metadata.html">here</a>, scroll down to the "Metadata Tables" section and you'll find a list of them.</p>
+<p>Basically what Mono allows us to do is to iterate through all the rows in each table, in the case of the <code>MONO_TABLE_TYPEDEF</code> table each row represents a type, and the columns contains information about that type. We can get a table from an image by making use of <code>mono_image_get_table_info</code>, and passing in the image and the "id" of the table we want.</p>
 <p>And as you can see from the code we can get the assembly image from an assembly by calling <code>mono_assembly_get_image</code> and passing in the assembly.</p>
 <h2 id="rows-and-columns"><a class="header" href="#rows-and-columns">Rows and Columns</a></h2>
 <p>After we have the table that we want to iterate through we have to get the number of rows, or type definitions in this case, in that table, we can do that by calling <code>mono_table_info_get_rows</code> and passing in the table info pointer.</p>
@@ -522,13 +522,13 @@ public class CSharpTesting
 
 // ...
 
-MonoClass* testingClass = GetClassInAssembly(appAssembly, &quot;&quot;, &quot;CSharpTesting&quot;);
+MonoClass* testingClass = GetClassInAssembly(appAssembly, "", "CSharpTesting");
 
 </code></pre>
 <h2 id="creating-an-instance-from-our-class"><a class="header" href="#creating-an-instance-from-our-class">Creating an instance from our class</a></h2>
 <p>Once we have our class we have to actually instantiate it. Instantiating a class involves two steps, first we have to allocate the object, then we have to call the correct constructor. Let's start by taking a look at the code, there are however some things we have to keep in mind with constructors that I'll cover at a later date.</p>
 <pre><code class="language-cpp">// Get a reference to the class we want to instantiate
-MonoClass* testingClass = GetClassInAssembly(appAssembly, &quot;&quot;, &quot;CSharpTesting&quot;);
+MonoClass* testingClass = GetClassInAssembly(appAssembly, "", "CSharpTesting");
 
 // Allocate an instance of our class
 MonoObject* classInstance = mono_object_new(s_AppDomain, testingClass);
@@ -559,8 +559,8 @@ mono_runtime_object_init(classInstance);
 <h2 id="mono_runtime_invoke-vs-unmanaged-method-thunks"><a class="header" href="#mono_runtime_invoke-vs-unmanaged-method-thunks"><code>mono_runtime_invoke</code> vs. Unmanaged Method Thunks</a></h2>
 <p>So, what's the difference? Well the difference is mainly in <em>how</em> Mono actually ends up calling the method in question, and also <em>what</em> parameters you can pass in.
 Using <code>mono_runtime_invoke</code> is slower compared to Unmanaged Method Thunks, but it's also <em>safe</em> and more flexible. <code>mono_runtime_invoke</code> can invoke <em>any</em> method with <em>any</em> parameters, and from what I understand <code>mono_runtime_invoke</code> also does a lot more error checking and validation on the object you pass, as well as the parameters.</p>
-<p>Unmanaged Method Thunks are <em>technically</em> called &quot;Unmanaged to Managed Thunks&quot;, but I call them &quot;Unmanaged Method Thunks&quot; because I accidentially misread the name once. Unmanaged Method Thunks is a concept added in version 2 of Mono, and they allow you to call C# methods with far less overhead compared to <code>mono_runtime_invoke</code>, this means that if you're calling a C# method many times a second, so maybe you have an <code>OnUpdate</code> method in C# that you're calling 60 - 144 times per second, you'd want to create an Unmanaged to Managed Thunk.</p>
-<p>Effectivley Unmanaged to Managed Thunks create a custom invokation method (e.g a custom &quot;trampoline&quot;) from unmanaged to managed code, and that invokation method is specific to the method signature you gave it, meaning there is no ambiguity as to what parameters can be passed in.</p>
+<p>Unmanaged Method Thunks are <em>technically</em> called "Unmanaged to Managed Thunks", but I call them "Unmanaged Method Thunks" because I accidentially misread the name once. Unmanaged Method Thunks is a concept added in version 2 of Mono, and they allow you to call C# methods with far less overhead compared to <code>mono_runtime_invoke</code>, this means that if you're calling a C# method many times a second, so maybe you have an <code>OnUpdate</code> method in C# that you're calling 60 - 144 times per second, you'd want to create an Unmanaged to Managed Thunk.</p>
+<p>Effectivley Unmanaged to Managed Thunks create a custom invokation method (e.g a custom "trampoline") from unmanaged to managed code, and that invokation method is specific to the method signature you gave it, meaning there is no ambiguity as to what parameters can be passed in.</p>
 <p>So, when should you use <code>mono_runtime_invoke</code> and when should you use Unmanaged Method Thunks? Well it depends. If you don't know the signature of the method at compile time (C++ compile time) then you have should probably use <code>mono_runtime_invoke</code>, although you <em>can</em> use Unmanaged Method Thunks as well, but generally for those you want the parameters to be known at compile time.</p>
 <p>A general rule of thumb is that if you're calling a C# method several times (more than 10 I'd say) per second, and you know the signature of that method at compile time you should use Unmanaged Method Thunks.</p>
 <p>If you don't know the method signature at compile time or if you're only calling the method every now and then instead of several times per second you probably want to go with <code>mono_runtime_invoke</code>.</p>
@@ -572,7 +572,7 @@ Using <code>mono_runtime_invoke</code> is slower compared to Unmanaged Method Th
 <pre><code class="language-cpp">MonoObject* InstantiateClass(const char* namespaceName, const char* className)
 {
     // Get a reference to the class we want to instantiate
-    MonoClass* testingClass = GetClassInAssembly(s_AppAssembly, &quot;&quot;, &quot;CSharpTesting&quot;);
+    MonoClass* testingClass = GetClassInAssembly(s_AppAssembly, "", "CSharpTesting");
 
     // Allocate an instance of our class
     MonoObject* classInstance = mono_object_new(s_AppDomain, testingClass);
@@ -592,11 +592,11 @@ void CallPrintFloatVarMethod(MonoObject* objectInstance)
     MonoClass* instanceClass = mono_object_get_class(objectInstance);
 
     // Get a reference to the method in the class
-    MonoMethod* method = mono_class_get_method_from_name(instanceClass, &quot;PrintFloatVar&quot;, 0);
+    MonoMethod* method = mono_class_get_method_from_name(instanceClass, "PrintFloatVar", 0);
 
     if (method == nullptr)
     {
-        // No method called &quot;PrintFloatVar&quot; with 0 parameters in the class, log error or something
+        // No method called "PrintFloatVar" with 0 parameters in the class, log error or something
         return;
     }
 
@@ -608,7 +608,7 @@ void CallPrintFloatVarMethod(MonoObject* objectInstance)
 }
 
 // ...
-MonoObject* testInstance = InstantiateClass(&quot;&quot;, &quot;CSharpTesting&quot;);
+MonoObject* testInstance = InstantiateClass("", "CSharpTesting");
 CallPrintFloatVarMethod(testInstance);
 </code></pre>
 <h3 id="explaining-the-code-1"><a class="header" href="#explaining-the-code-1">Explaining the Code</a></h3>
@@ -625,7 +625,7 @@ CallPrintFloatVarMethod(testInstance);
 <p>It's also worth noting that <code>mono_runtime_invoke</code> can actually return something to us. A <code>MonoObject*</code> in fact. This is useful if the method you're calling returns something and you want to retrieve and do something with that return value in C++. If the method is marked as <code>void</code> then <code>mono_runtime_invoke</code> will simply return <code>nullptr</code>.</p>
 <p>Our method doesn't return anything so we won't bother dealing with that for now, but don't worry I'll be sure to cover this as well.</p>
 <h2 id="passing-parameters-to-a-method"><a class="header" href="#passing-parameters-to-a-method">Passing Parameters to a Method</a></h2>
-<p>Now that we can call C# methods that don't return anything or take any parameters, I think it's time to learn how we can pass parameters to C# methods from C++. Before we get started I will say that passing parameters often times involves &quot;Marshalling&quot; the data between unmanaged and managed memory. I won't go into too much detail about <em>what</em> marshalling is, or how Mono handles it, but <a href="https://mark-borg.github.io/blog/2017/interop/">this</a> article explains it in a pretty good way, so I highly recommend reading it if you're interested in learning more. I also recommend reading <a href="https://www.mono-project.com/docs/advanced/embedding/#exposing-c-code-to-the-cil-universe:~:text=For%20example%2C%20passing,the%20marshalling%20attributes">this</a> example of marshalling in Mono specifically.</p>
+<p>Now that we can call C# methods that don't return anything or take any parameters, I think it's time to learn how we can pass parameters to C# methods from C++. Before we get started I will say that passing parameters often times involves "Marshalling" the data between unmanaged and managed memory. I won't go into too much detail about <em>what</em> marshalling is, or how Mono handles it, but <a href="https://mark-borg.github.io/blog/2017/interop/">this</a> article explains it in a pretty good way, so I highly recommend reading it if you're interested in learning more. I also recommend reading <a href="https://www.mono-project.com/docs/advanced/embedding/#exposing-c-code-to-the-cil-universe:~:text=For%20example%2C%20passing,the%20marshalling%20attributes">this</a> example of marshalling in Mono specifically.</p>
 <p>It's important to note that Mono will almost never handle marshalling for us, meaning we will need to do some manual type checking and coversions later on, for now we'll just be passing a simple float, which doesn't need to be marshalled in the first place.</p>
 <h3 id="the-code-2"><a class="header" href="#the-code-2">The Code</a></h3>
 <pre><code class="language-cpp">void CallIncrementFloatVarMethod(MonoObject* objectInstance, float value)
@@ -634,11 +634,11 @@ CallPrintFloatVarMethod(testInstance);
     MonoClass* instanceClass = mono_object_get_class(objectInstance);
 
     // Get a reference to the method in the class
-    MonoMethod* method = mono_class_get_method_from_name(instanceClass, &quot;IncrementFloatVar&quot;, 1);
+    MonoMethod* method = mono_class_get_method_from_name(instanceClass, "IncrementFloatVar", 1);
 
     if (method == nullptr)
     {
-        // No method called &quot;IncrementFloatVar&quot; with 1 parameter in the class, log error or something
+        // No method called "IncrementFloatVar" with 1 parameter in the class, log error or something
         return;
     }
 
@@ -661,7 +661,7 @@ CallPrintFloatVarMethod(testInstance);
 }
 
 // ...
-MonoObject* testInstance = InstantiateClass(&quot;&quot;, &quot;CSharpTesting&quot;);
+MonoObject* testInstance = InstantiateClass("", "CSharpTesting");
 CallIncrementFloatVarMethod(testInstance, 5.0f);
 </code></pre>
 <h3 id="explaining-the-code-2"><a class="header" href="#explaining-the-code-2">Explaining the Code</a></h3>
@@ -683,7 +683,7 @@ public class CSharpTesting
 {
     public float MyPublicFloatVar = 5.0f;
 
-    private string m_Name = &quot;Hello&quot;;
+    private string m_Name = "Hello";
     public string Name
     {
         get =&gt; m_Name;
@@ -696,7 +696,7 @@ public class CSharpTesting
 
     public void PrintFloatVar()
     {
-        Console.WriteLine(&quot;MyPublicFloatVar = {0:F}&quot;, MyPublicFloatVar);
+        Console.WriteLine("MyPublicFloatVar = {0:F}", MyPublicFloatVar);
     }
 
     private void IncrementFloatVar(float value)
@@ -707,17 +707,17 @@ public class CSharpTesting
 }
 </code></pre>
 <p>And on the C++ side of things:</p>
-<pre><code class="language-cpp">MonoObject* testingInstance = InstantiateClass(&quot;&quot;, &quot;CSharpTesting&quot;);
+<pre><code class="language-cpp">MonoObject* testingInstance = InstantiateClass("", "CSharpTesting");
 MonoClass* testingClass = mono_object_get_class(testingInstance);
 
-// Get a reference to the public field called &quot;MyPublicFloatVar&quot;
-MonoClassField* floatField = mono_class_get_field_from_name(testingClass, &quot;MyPublicFloatVar&quot;);
+// Get a reference to the public field called "MyPublicFloatVar"
+MonoClassField* floatField = mono_class_get_field_from_name(testingClass, "MyPublicFloatVar");
 
-// Get a reference to the private field called &quot;m_Name&quot;
-MonoClassField* nameField = mono_class_get_field_from_name(testingClass, &quot;m_Name&quot;);
+// Get a reference to the private field called "m_Name"
+MonoClassField* nameField = mono_class_get_field_from_name(testingClass, "m_Name");
 
-// Get a reference to the public property called &quot;Name&quot;
-MonoProperty* nameProperty = mono_class_get_property_from_name(testingClass, &quot;Name&quot;);
+// Get a reference to the public property called "Name"
+MonoProperty* nameProperty = mono_class_get_property_from_name(testingClass, "Name");
 
 // Do something
 
@@ -854,11 +854,11 @@ uint8_t GetPropertyAccessbility(MonoProperty* property)
 
 // ...
 
-MonoObject* testingInstance = InstantiateClass(&quot;&quot;, &quot;CSharpTesting&quot;);
+MonoObject* testingInstance = InstantiateClass("", "CSharpTesting");
 MonoClass* testingClass = mono_object_get_class(testingInstance);
 
-// Get a reference to the public field called &quot;MyPublicFloatVar&quot;
-MonoClassField* floatField = mono_class_get_field_from_name(testingClass, &quot;MyPublicFloatVar&quot;);
+// Get a reference to the public field called "MyPublicFloatVar"
+MonoClassField* floatField = mono_class_get_field_from_name(testingClass, "MyPublicFloatVar");
 uint8_t floatFieldAccessibility = GetFieldAccessibility(floatField);
 
 if (floatFieldAccessibility &amp; (uint8_t)Accessibility::Public)
@@ -866,8 +866,8 @@ if (floatFieldAccessibility &amp; (uint8_t)Accessibility::Public)
     // We can safely write a value to this
 }
 
-// Get a reference to the private field called &quot;m_Name&quot;
-MonoClassField* nameField = mono_class_get_field_from_name(testingClass, &quot;m_Name&quot;);
+// Get a reference to the private field called "m_Name"
+MonoClassField* nameField = mono_class_get_field_from_name(testingClass, "m_Name");
 uint8_t nameFieldAccessibility = GetFieldAccessibility(nameField);
 
 if (nameFieldAccessibility &amp; (uint8_t)Accessibility::Private)
@@ -875,8 +875,8 @@ if (nameFieldAccessibility &amp; (uint8_t)Accessibility::Private)
     // We shouldn't write to this field
 }
 
-// Get a reference to the public property called &quot;Name&quot;
-MonoProperty* nameProperty = mono_class_get_property_from_name(testingClass, &quot;Name&quot;);
+// Get a reference to the public property called "Name"
+MonoProperty* nameProperty = mono_class_get_property_from_name(testingClass, "Name");
 uint8_t namePropertyAccessibility = GetPropertyAccessibility(nameProperty);
 
 if (namePropertyAccessibility &amp; (uint8_t)Accessibility::Public)
@@ -918,9 +918,9 @@ if (namePropertyAccessibility &amp; (uint8_t)Accessibility::Public)
 	{
 		unsigned short errorCode = mono_error_get_error_code(&amp;error);
 		const char* errorMessage = mono_error_get_message(&amp;error);
-        printf(&quot;Mono Error!\n&quot;);
-        printf(&quot;\tError Code: %hu\n&quot;, errorCode);
-        printf(&quot;\tError Message: %s\n&quot;, errorMessage);
+        printf("Mono Error!\n");
+        printf("\tError Code: %hu\n", errorCode);
+        printf("\tError Message: %s\n", errorMessage);
 		mono_error_cleanup(&amp;error);
 	}
 	return hasError;
@@ -929,21 +929,21 @@ if (namePropertyAccessibility &amp; (uint8_t)Accessibility::Public)
 std::string MonoStringToUTF8(MonoString* monoString)
 {
 	if (monoString == nullptr || mono_string_length(monoString) == 0)
-		return &quot;&quot;;
+		return "";
 
 	MonoError error;
 	char* utf8 = mono_string_to_utf8_checked(monoString, &amp;error);
 	if (CheckMonoError(error))
-		return &quot;&quot;;
+		return "";
 	std::string result(utf8);
 	mono_free(utf8);
 	return result;
 }
 
-MonoObject* testingInstance = InstantiateClass(&quot;&quot;, &quot;CSharpTesting&quot;);
+MonoObject* testingInstance = InstantiateClass("", "CSharpTesting");
 MonoClass* testingClass = mono_object_get_class(testingInstance);
 
-MonoClassField* floatField = mono_class_get_field_from_name(testingClass, &quot;MyPublicFloatVar&quot;);
+MonoClassField* floatField = mono_class_get_field_from_name(testingClass, "MyPublicFloatVar");
 
 // Get the value of MyPublicFloatVar from the testingInstance object
 float value;
@@ -953,14 +953,14 @@ mono_field_get_value(testingInstance, floatField, &amp;value);
 value += 10.0f;
 mono_field_set_value(testingInstance, floatField, &amp;value);
 
-MonoProperty* nameProperty = mono_class_get_property_from_name(testingClass, &quot;Name&quot;);
+MonoProperty* nameProperty = mono_class_get_property_from_name(testingClass, "Name");
 
 // Get the value of Name by invoking the getter method
 MonoString* nameValue = (MonoString*)mono_property_get_value(nameProperty, testingInstance, nullptr, nullptr);
 std::string nameStr = MonoStringToUTF8(nameValue);
 
 // Modify and assign the value back to the property by invoking the setter method
-nameStr += &quot;, World!&quot;;
+nameStr += ", World!";
 nameValue = mono_string_new(s_AppDomain, nameStr.c_str());
 mono_property_set_value(nameProperty, testingInstance, (void**)&amp;nameValue, nullptr);
 
@@ -979,7 +979,7 @@ If you're getting a value type as long as the value isn't boxed, like we're doin
 <p>First of all we call <code>mono_property_get_value</code>, which will invoke the properties getter method for us. The first two parameters are simply the property itself and the class instance. The last two parameters, where we pass nullptr represent any parameters that the getter method might expect, and lastly a pointer to a <code>MonoException*</code> that we can get back from the method in case it throws one. The third parameter doesn't really make sense in my opinion since a property's getter method <em>can't</em> take any parameters that I'm aware of, so I'll always pass <code>nullptr</code>.</p>
 <p>As you can see we're getting a string, and because of that we simply get a pointer to a <code>MonoString</code> struct, which holds a pointer to the C# string, in managed memory. It's important to note that <code>mono_property_get_value</code> returns a <code>MonoObject</code> pointer, which in the case of a string should simply be cast to a <code>MonoString</code> pointer.</p>
 <p>In the case of e.g a value type it will return the value boxed inside a <code>MonoObject</code>, meaning we'll have to unbox it. I <em>highly</em> recommend you read up on boxing and unboxing <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/types/boxing-and-unboxing">here</a>.</p>
-<p>But since in this case we're getting a string we simply cast it, and then convert it to an <code>std::string</code>. As you can see we do use <code>mono_string_to_utf8_checked</code>, and I wanted to mention that if there is a &quot;checked&quot; version of a Mono function available you should <strong>always</strong> use that one, and <strong>never</strong> the unchecked version. This function also returns a pointer to a buffer, and we're in charge of freeing it after we're done with it. So keep that in mind.</p>
+<p>But since in this case we're getting a string we simply cast it, and then convert it to an <code>std::string</code>. As you can see we do use <code>mono_string_to_utf8_checked</code>, and I wanted to mention that if there is a "checked" version of a Mono function available you should <strong>always</strong> use that one, and <strong>never</strong> the unchecked version. This function also returns a pointer to a buffer, and we're in charge of freeing it after we're done with it. So keep that in mind.</p>
 <p>If you want to see how to deal with unboxing value types like floats, see the code I've written below.</p>
 <p>Alright, now that we've got our string and we've modified it, it's time to assing it back to C#. As I'm sure you're aware we're doing a <em>lot</em> of copying here, but don't worry too much about it since you most likely won't be getting and setting C# values from C++ every frame.</p>
 <p>In order to invoke the setter function of the property we call <code>mono_property_set_value</code>, and just like with the getter we pass the property and the class instance. Then we have to pass the value itself. The last parameter is again a pointer to a <code>MonoObject*</code>, which will contain any exceptions thrown by the setter. I'm passing <code>nullptr</code> here again.</p>
@@ -988,7 +988,7 @@ If you're getting a value type as long as the value isn't boxed, like we're doin
 <p>In the case of a <code>MonoObject*</code> or a <code>MonoString*</code> you can simply pass the memory address and cast it to a <code>void**</code>. Although I do recommend going with the <code>void*</code> array approach, since that works at all times.</p>
 <p>You can probably tell that in the example above we call <code>mono_string_new</code>, and pass the AppDomain as well as the C string in order to construct a new <code>MonoString</code>. We do this because we can't, and shouldn't attempt to modify the <code>MonoString</code> we got from the property, I won't go into <em>too</em> much detail on strings because I'll cover them in-depth later on.</p>
 <h3 id="dealing-with-value-types-and-properties"><a class="header" href="#dealing-with-value-types-and-properties">Dealing with Value Types and Properties</a></h3>
-<pre><code class="language-cpp">MonoProperty* floatProperty = mono_class_get_property_from_name(testingClass, &quot;MyFloatProperty&quot;);
+<pre><code class="language-cpp">MonoProperty* floatProperty = mono_class_get_property_from_name(testingClass, "MyFloatProperty");
 
 // Get the value of Name by invoking the getter method
 MonoObject* floatValueObj = mono_property_get_value(floatProperty, testingInstance, nullptr, nullptr);
